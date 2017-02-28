@@ -48,26 +48,11 @@ echo "$output"
 @test "run pmm-admin add linux:metrics with given name" {
 run sudo pmm-admin add linux:metrics mytest1.os1
 echo "$output"
-    [ "$status" -eq 0 ]
-    [ "${lines[0]}" = "OK, now monitoring this system." ]
-}
-
-@test "run pmm-admin add linux:metrics with given name again" {
-run sudo pmm-admin add linux:metrics mytest1.os1
-echo "$output"
     [ "$status" -eq 1 ]
     echo "${output}" | grep "there could be only one instance"
 }
 
 @test "run pmm-admin remove linux:metrics with given name" {
-run sudo pmm-admin remove linux:metrics mytest1.os1
-echo "$output"
-    [ "$status" -eq 0 ]
-    [ "${lines[0]}" = "OK, removed system mytest1.os1 from monitoring." ]
-}
-
-
-@test "run pmm-admin remove linux:metrics with given name again" {
 run sudo pmm-admin remove linux:metrics mytest1.os1
 echo "$output"
     [ "$status" -eq 1 ]
