@@ -25,7 +25,7 @@ echo "$output"
 run sudo pmm-admin list
 echo "$output"
     [ "$status" -eq 0 ]
-    echo "${output}" | grep "No services under monitoring."
+    echo "${output}" | grep "pmm-admin 1.1.1"
 }
 
 @test "run pmm-admin add linux:metrics" {
