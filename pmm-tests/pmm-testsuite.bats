@@ -70,6 +70,7 @@ function run_ps_specific_tests() {
 
 @test "Running linux metrics tests" {
   run_linux_metrics_tests
+  echo $output
   [ "$status" -eq 0 ]
 }
 
