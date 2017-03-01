@@ -102,6 +102,9 @@ if [ $instance_t = "mo" ]; then
 fi
 
 
+
+if [ $instance_t = "ps" ]; then
+
 @test "Wipe clients" {
   pmm_wipe_clients
   echo $output
@@ -139,7 +142,7 @@ fi
   [ "$status" -eq 0 ]
 }
 
-
+fi
 #
 # @test "Downloading tarball" {
 #   #statement
