@@ -105,42 +105,42 @@ fi
 
 if [ $instance_t = "ps" ]; then
 
-@test "Wipe clients" {
-  pmm_wipe_clients
-  echo $output
-  [ "$status" -eq 0 ]
-}
+  @test "Wipe clients" {
+    pmm_wipe_clients
+    echo $output
+    [ "$status" -eq 0 ]
+  }
 
-@test "Adding clients" {
-  pmm_framework_add_clients $instance_t $instance_c
-  echo $output
-  [ "$status" -eq 0 ]
-}
+  @test "Adding clients" {
+    pmm_framework_add_clients $instance_t $instance_c
+    echo $output
+    [ "$status" -eq 0 ]
+  }
 
-@test "Running linux metrics tests" {
-  run_linux_metrics_tests
-  echo $output
-  [ "$status" -eq 0 ]
-}
+  @test "Running linux metrics tests" {
+    run_linux_metrics_tests
+    echo $output
+    [ "$status" -eq 0 ]
+  }
 
-@test "Running generic tests" {
-  run_generic_tests
-  #echo $output
-  [ "$status" -eq 0 ]
-  #echo $output
-}
+  @test "Running generic tests" {
+    run_generic_tests
+    #echo $output
+    [ "$status" -eq 0 ]
+    #echo $output
+  }
 
-@test "Running PS specific tests" {
-  run_ps_specific_tests
-  echo ${output}
-  [ "$status" -eq 0 ]
-}
+  @test "Running PS specific tests" {
+    run_ps_specific_tests
+    echo ${output}
+    [ "$status" -eq 0 ]
+  }
 
-@test "Wipe clients" {
-  pmm_wipe_clients
-  echo $output
-  [ "$status" -eq 0 ]
-}
+  @test "Wipe clients" {
+    pmm_wipe_clients
+    echo $output
+    [ "$status" -eq 0 ]
+  }
 
 fi
 #
