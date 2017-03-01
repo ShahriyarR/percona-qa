@@ -13,7 +13,7 @@
 
 WORKDIR="${PWD}"
 SCRIPT_PWD="$BATS_TEST_DIRNAME"
-BLOCK=$1
+
 
 function download_tarballs() {
   # For now simply wget PS for CentOS 7
@@ -56,6 +56,52 @@ function run_ps_specific_tests() {
   run bats ${SCRIPT_PWD}/ps-specific-tests.bats
 }
 
+function run_mongodb_specific_tests() {
+  run bats ${SCRIPT_PWD}/mongodb-tests.bats
+}
+
+if [ $instance_t = "mo" ]; then
+
+  @test "Wipe clients" {
+    pmm_wipe_clients
+    echo $output
+    [ "$status" -eq 0 ]
+  }
+
+  @test "Adding clients" {
+    pmm_framework_add_clients $instance_t $instance_c
+    echo $output
+    [ "$status" -eq 0 ]
+  }
+
+  @test "Running linux metrics tests" {
+    run_linux_metrics_tests
+    echo $output
+    [ "$status" -eq 0 ]
+  }
+
+  @test "Running generic tests" {
+    run_generic_tests
+    #echo $output
+    [ "$status" -eq 0 ]
+    #echo $output
+  }
+
+  @test "Running mongodb specific tests" {
+    run_mongodb_specific_tests
+    echo $output
+    [ "$status" -eq 0 ]
+  }
+
+  @test "Wipe clients" {
+    pmm_wipe_clients
+    echo $output
+    [ "$status" -eq 0 ]
+  }
+
+fi
+
+
 @test "Wipe clients" {
   pmm_wipe_clients
   echo $output
@@ -92,7 +138,6 @@ function run_ps_specific_tests() {
   echo $output
   [ "$status" -eq 0 ]
 }
-
 
 
 #
