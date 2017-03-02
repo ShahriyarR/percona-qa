@@ -56,6 +56,10 @@ function run_ps_specific_tests() {
   run bats ${SCRIPT_PWD}/ps-specific-tests.bats
 }
 
+function run_pxc_specific_tests() {
+  run bats ${SCRIPT_PWD}/pxc-specific-tests.bats
+}
+
 function run_mongodb_specific_tests() {
   run bats ${SCRIPT_PWD}/mongodb-tests.bats
 }
@@ -104,13 +108,23 @@ function run_proxysql_tests() {
 }
 
 @test "Running PS specific tests" {
-  if [[ $instance_t != "ps" ]] || [[ $instance_t != "pxc" ]] ; then
+  if [[ $instance_t != "ps" ]]; then
   	skip "Skipping PS specific tests! "
   fi
     run_ps_specific_tests
     echo ${output}
     [ "$status" -eq 0 ]
 }
+
+@test "Running PS specific tests" {
+  if [[ $instance_t != "pxc" ]]; then
+  	skip "Skipping PXC specific tests! "
+  fi
+    run_ps_specific_tests
+    echo ${output}
+    [ "$status" -eq 0 ]
+}
+
 
 # ProxySQL
 @test "Running ProxySQL tests" {
