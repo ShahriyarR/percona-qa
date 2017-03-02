@@ -60,98 +60,47 @@ function run_mongodb_specific_tests() {
   run bats ${SCRIPT_PWD}/mongodb-tests.bats
 }
 
-if [ $instance_t = "mo" ]; then
+# Running tests
 
-  @test "Wipe clients" {
+@test "Wipe clients" {
     pmm_wipe_clients
     echo $output
     [ "$status" -eq 0 ]
-  }
+}
 
-  @test "Adding clients" {
+@test "Adding clients" {
     pmm_framework_add_clients $instance_t $instance_c
     echo $output
     [ "$status" -eq 0 ]
-  }
+}
 
-  # @test "Running linux metrics tests" {
-  #   run_linux_metrics_tests
-  #   echo $output
-  #   [ "$status" -eq 0 ]
-  # }
-
-  @test "Running generic tests" {
-    run_generic_tests
-    #echo $output
-    [ "$status" -eq 0 ]
-    #echo $output
-  }
-
-  @test "Running mongodb specific tests" {
-    run_mongodb_specific_tests
-    echo $output
-    [ "$status" -eq 0 ]
-  }
-
-  @test "Wipe clients" {
-    pmm_wipe_clients
-    echo $output
-    [ "$status" -eq 0 ]
-  }
-
-fi
-
-
-
-if [ $instance_t = "ps" ]; then
-
-  @test "Wipe clients" {
-    pmm_wipe_clients
-    echo $output
-    [ "$status" -eq 0 ]
-  }
-
-  @test "Adding clients" {
-    pmm_framework_add_clients $instance_t $instance_c
-    echo $output
-    [ "$status" -eq 0 ]
-  }
-
-  @test "Running linux metrics tests" {
+@test "Running linux metrics tests" {
+  if [[ $instance_t = "mo" ]] ; then
+  	skip "Skipping this test, because mongodb tests will run!"
+  fi
     run_linux_metrics_tests
     echo $output
     [ "$status" -eq 0 ]
-  }
+}
 
-  @test "Running generic tests" {
+@test "Running generic tests" {
     run_generic_tests
     #echo $output
     [ "$status" -eq 0 ]
     #echo $output
-  }
+}
 
-  @test "Running PS specific tests" {
+@test "Running PS specific tests" {
+  if [[ $instance_t != "ps" ]] ; then
+  	skip "Skipping PS specific tests! "
+  fi
     run_ps_specific_tests
     echo ${output}
     [ "$status" -eq 0 ]
-  }
+}
 
-  @test "Wipe clients" {
+@test "Wipe clients" {
     pmm_wipe_clients
     echo $output
     [ "$status" -eq 0 ]
-  }
-
-fi
-#
-# @test "Downloading tarball" {
-#   #statement
-#   download_tarballs
-#   [ "$status" -eq 0 ]
-# }
-
-# @test "Adding clients" {
-#   pmm_framwork_add_clients ps 2
-#   echo $output
-#   [ "$status" -eq 0 ]
-# }
+}
