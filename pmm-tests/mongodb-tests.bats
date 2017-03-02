@@ -23,7 +23,7 @@ echo "$output"
   run sudo pmm-admin add mongodb
   [ "$status" -eq 0 ]
   echo "${lines[0]}" | grep "OK, now monitoring"
-  echo "${lines[1]}" | grep "OK, now monitoring"
+  echo "${lines[1]}" | grep "OK, already"
 }
 
 @test "run pmm-admin add mongodb again" {
