@@ -76,7 +76,7 @@ function run_mongodb_specific_tests() {
 
 @test "Running linux metrics tests" {
   if [[ $instance_t = "mo" ]] ; then
-  	skip "Skipping this test, because mongodb tests will run!"
+  	skip "Skipping this test"
   fi
     run_linux_metrics_tests
     echo $output
