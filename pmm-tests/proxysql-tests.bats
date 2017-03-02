@@ -26,7 +26,7 @@ echo "$output"
 
 @test "run pmm-admin add proxysql:metrics again" {
   run sudo pmm-admin add proxysql:metrics
-  [ "$status" -eq 0 ]
+  [ "$status" -eq 1 ]
   [ "${lines[0]}" = "Error adding proxysql metrics: there is already one instance with this name under monitoring." ]
 }
 
@@ -39,7 +39,7 @@ echo "$output"
 
 @test "run pmm-admin add proxysql:metrics named again" {
   run sudo pmm-admin add proxysql:metrics 0x0
-  [ "$status" -eq 0 ]
+  [ "$status" -eq 1 ]
   [ "${lines[0]}" = "Error adding proxysql metrics: there is already one instance with this name under monitoring." ]
 }
 
