@@ -92,7 +92,7 @@ function run_mongodb_specific_tests() {
 
 @test "Running MongoDB specific tests" {
   if [[ $instance_t != "mo" ]] ; then
-  	skip "Skipping PS specific tests! "
+  	skip "Skipping MongoDB specific tests! "
   fi
   run_mongodb_specific_tests
   echo ${output}
