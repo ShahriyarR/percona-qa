@@ -113,7 +113,7 @@ function run_proxysql_tests() {
 }
 
 # ProxySQL
-@test "Running pmm-admin add proxysql:metrics" {
+@test "Running ProxySQL tests" {
   if [[ $instance_t != "pxc" ]] ; then
   	skip "Skipping ProxySQL specific tests!"
   fi
