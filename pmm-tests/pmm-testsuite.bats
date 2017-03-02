@@ -90,6 +90,16 @@ function run_mongodb_specific_tests() {
     #echo $output
 }
 
+@test "Running MongoDB specific tests" {
+  if [[ $instance_t != "mo" ]] ; then
+  	skip "Skipping PS specific tests! "
+  fi
+  run_mongodb_specific_tests
+  echo ${output}
+  [ "$status" -eq 0 ]
+  echo ${output}
+}
+
 @test "Running PS specific tests" {
   if [[ $instance_t != "ps" ]] ; then
   	skip "Skipping PS specific tests! "
