@@ -116,11 +116,11 @@ function run_proxysql_tests() {
     [ "$status" -eq 0 ]
 }
 
-@test "Running PS specific tests" {
+@test "Running PXC specific tests" {
   if [[ $instance_t != "pxc" ]]; then
   	skip "Skipping PXC specific tests! "
   fi
-    run_ps_specific_tests
+    run_pxc_specific_tests
     echo ${output}
     [ "$status" -eq 0 ]
 }
