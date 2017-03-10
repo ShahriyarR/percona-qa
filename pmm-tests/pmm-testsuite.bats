@@ -67,6 +67,12 @@ function run_mongodb_specific_tests() {
 function run_proxysql_tests() {
   run bats ${SCRIPT_PWD}/proxysql-tests.bats
 }
+
+# Additional functions
+function run_create_table() {
+  run bash ${SCRIPT_PWD}/create_table.sh $1
+}
+
 # Running tests
 
 @test "Wipe clients" {
@@ -94,6 +100,12 @@ function run_proxysql_tests() {
     run_generic_tests
     [ "$status" -eq 0 ]
     echo $output
+}
+
+@test "WARN: Stress test is enabled. Running!" {
+  run_create_table $instance_t
+  [ "$status" -eq 0 ]
+  echo $output
 }
 
 @test "Running MongoDB specific tests" {
