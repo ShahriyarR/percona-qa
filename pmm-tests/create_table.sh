@@ -18,7 +18,7 @@ fi
 
 for i in $(sudo pmm-admin list | grep "mysql:metrics" | sed 's|.*(||;s|)||') ; do
 	MYSQL_SOCK=${i}
-  for num in $(seq 1 1 100)
+  for num in $(seq 1 1 100) ; do
 	    ${BASEDIR}/bin/mysql --user=${MYSQL_USER} --socket=${MYSQL_SOCK} -e "create table t${num}(id int not null)"
   done
 done
