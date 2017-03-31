@@ -2,7 +2,7 @@
 
 WORKDIR="${PWD}"
 SCRIPT_PWD="$BATS_TEST_DIRNAME"
-
+echo "$0"
 
 # pmm-framework.sh functions
 
