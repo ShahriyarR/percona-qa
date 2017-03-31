@@ -2,8 +2,8 @@
 
 WORKDIR="${PWD}"
 SCRIPT_PWD="$BATS_TEST_DIRNAME"
-DIRNAME = dirname "$0"
-
+DIRNAME = "${dirname "$0"}"
+echo $DIRNAME
 # pmm-framework.sh functions
 
 function pmm_framework_setup() {
