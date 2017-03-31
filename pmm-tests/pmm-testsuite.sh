@@ -1,29 +1,29 @@
 #!/usr/bin/env bats
 
 WORKDIR="${PWD}"
-SCRIPT_PWD="$BATS_TEST_DIRNAME"
+DIRNAME="$BATS_TEST_DIRNAME"
 DIRNAME=$(dirname "$0")
 echo $DIRNAME
 # pmm-framework.sh functions
 
 function pmm_framework_setup() {
-  run ${SCRIPT_PWD}/pmm-framework.sh --setup
+  ${DIRNAME}/pmm-framework.sh --setup
 }
 
 function pmm_framework_add_clients() {
-  run ${SCRIPT_PWD}/pmm-framework.sh --addclient=$1,$2
+  ${DIRNAME}/pmm-framework.sh --addclient=$1,$2
 }
 
 function pmm_wipe_all() {
-  run ${SCRIPT_PWD}/pmm-framework.sh --wipe
+  ${DIRNAME}/pmm-framework.sh --wipe
 }
 
 function pmm_wipe_clients() {
-  run ${SCRIPT_PWD}/pmm-framework.sh --wipe-clients
+  ${DIRNAME}/pmm-framework.sh --wipe-clients
 }
 
 function  pmm_wipe_server() {
-  run ${SCRIPT_PWD}/pmm-framework.sh --wipe-server
+  ${DIRNAME}/pmm-framework.sh --wipe-server
 }
 
 # functions for bats calling
@@ -33,31 +33,81 @@ function run_linux_metrics_tests() {
 }
 
 function run_generic_tests() {
-  run bats ${SCRIPT_PWD}/generic-tests.bats
+  bats ${DIRNAME}/generic-tests.bats
 }
 
 function run_ps_specific_tests() {
-  run bats ${SCRIPT_PWD}/ps-specific-tests.bats
+  bats ${DIRNAME}/ps-specific-tests.bats
 }
 
 function run_pxc_specific_tests() {
-  run bats ${SCRIPT_PWD}/pxc-specific-tests.bats
+  bats ${DIRNAME}/pxc-specific-tests.bats
 }
 
 function run_mongodb_specific_tests() {
-  run bats ${SCRIPT_PWD}/mongodb-tests.bats
+  bats ${DIRNAME}/mongodb-tests.bats
 }
 
 function run_proxysql_tests() {
-  run bats ${SCRIPT_PWD}/proxysql-tests.bats
+  bats ${DIRNAME}/proxysql-tests.bats
 }
 
 # Additional functions
 function run_create_table() {
-  run bash ${SCRIPT_PWD}/create_table.sh $1 $2
+  bash ${DIRNAME}/create_table.sh $1 $2
 }
 
 
+# Running tests
+echo "Wipe clients"
+pmm_wipe_clients
+
+echo "Adding clients"
+pmm_framework_add_clients $instance_t $instance_c
+
 if [[ $instance_t != "mo" ]] ; then
+  echo "Running linux metrics tests"
   run_linux_metrics_tests
 fi
+
+echo "Running generic tests"
+run_generic_tests
+
+if [[ $stress == "1" ]] ; then
+  echo "WARN: Running stress tests"
+  run_create_table $instance_t $table_c
+fi
+
+
+if [[ $instance_t == "mo" ]] ; then
+  echo "Running MongoDB specific tests"
+  run_mongodb_specific_tests
+fi
+
+
+if [[ $instance_t == "ps" ]]; then
+  echo "Running PS specific tests"
+  run_ps_specific_tests
+fi
+
+
+if [[ $instance_t != "pxc" ]]; then
+  echo "Running PXC specific tests"
+  run_pxc_specific_tests
+fi
+
+
+# ProxySQL
+# @test "Running ProxySQL tests" {
+#   if [[ $instance_t != "pxc" ]] ; then
+#   	skip "Skipping ProxySQL specific tests!"
+#   fi
+#   run_proxysql_tests
+#   echo ${output}
+#   [ "$status" -eq 0 ]
+# }
+
+# ProxySQL
+
+echo "Wipe clients"
+pmm_wipe_clients
