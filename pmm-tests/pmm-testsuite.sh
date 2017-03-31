@@ -4,6 +4,8 @@ WORKDIR="${PWD}"
 DIRNAME="$BATS_TEST_DIRNAME"
 DIRNAME=$(dirname "$0")
 echo $DIRNAME
+echo $instance_t
+echo $instance_c
 # pmm-framework.sh functions
 
 function pmm_framework_setup() {
