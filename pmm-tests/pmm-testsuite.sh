@@ -29,7 +29,7 @@ function  pmm_wipe_server() {
 # functions for bats calling
 
 function run_linux_metrics_tests() {
-  run bats ${SCRIPT_PWD}/linux-metrics.bats
+  bats ${SCRIPT_PWD}/linux-metrics.bats
 }
 
 function run_generic_tests() {
