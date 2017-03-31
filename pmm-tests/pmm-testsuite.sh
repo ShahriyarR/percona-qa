@@ -3,9 +3,6 @@
 WORKDIR="${PWD}"
 DIRNAME="$BATS_TEST_DIRNAME"
 DIRNAME=$(dirname "$0")
-echo $DIRNAME
-echo $instance_t
-echo $instance_c
 # pmm-framework.sh functions
 
 function pmm_framework_setup() {
@@ -80,11 +77,7 @@ function run_proxysql_tests() {
 
 # Additional functions
 function run_create_table() {
-  if [[ $tap == 1 ]] ; then
-    bash --tap ${DIRNAME}/create_table.sh $1 $2
-  else
-    bash ${DIRNAME}/create_table.sh $1 $2
-  fi
+  bash ${DIRNAME}/create_table.sh $1 $2
 }
 
 
