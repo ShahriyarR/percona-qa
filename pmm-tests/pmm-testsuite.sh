@@ -93,7 +93,7 @@ if [[ $instance_t == "ps" ]]; then
 fi
 
 
-if [[ $instance_t != "pxc" ]]; then
+if [[ $instance_t == "pxc" ]]; then
   echo "Running PXC specific tests"
   run_pxc_specific_tests
 fi
