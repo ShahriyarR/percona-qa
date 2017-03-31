@@ -1,6 +1,8 @@
 WORKDIR="${PWD}"
 SCRIPT_PWD="$BATS_TEST_DIRNAME"
 
+source /usr/local/bin/bats
+
 # pmm-framework.sh functions
 
 function pmm_framework_setup() {
