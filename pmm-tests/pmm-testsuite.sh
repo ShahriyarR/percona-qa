@@ -2,8 +2,7 @@
 
 WORKDIR="${PWD}"
 SCRIPT_PWD="$BATS_TEST_DIRNAME"
-echo "$0"
-dirname "$0"
+DIRNAME = dirname "$0"
 
 # pmm-framework.sh functions
 
@@ -30,7 +29,7 @@ function  pmm_wipe_server() {
 # functions for bats calling
 
 function run_linux_metrics_tests() {
-  bats ${SCRIPT_PWD}/linux-metrics.bats
+  bats ${DIRNAME}/linux-metrics.bats
 }
 
 function run_generic_tests() {
