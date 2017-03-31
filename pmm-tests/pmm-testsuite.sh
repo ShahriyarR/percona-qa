@@ -33,51 +33,58 @@ function  pmm_wipe_server() {
 function run_linux_metrics_tests() {
   if [[ $tap == 1 ]] ; then
     bats --tap $DIRNAME/linux-metrics.bats
+  else
+    bats $DIRNAME/linux-metrics.bats
   fi
-  bats $DIRNAME/linux-metrics.bats
 }
 
 function run_generic_tests() {
   if [[ $tap == 1 ]] ; then
     bats --tap ${DIRNAME}/generic-tests.bats
+  else
+    bats ${DIRNAME}/generic-tests.bats
   fi
-  bats ${DIRNAME}/generic-tests.bats
 }
 
 function run_ps_specific_tests() {
   if [[ $tap == 1 ]] ; then
     bats --tap ${DIRNAME}/ps-specific-tests.bats
+  else
+    bats ${DIRNAME}/ps-specific-tests.bats
   fi
-  bats ${DIRNAME}/ps-specific-tests.bats
 }
 
 function run_pxc_specific_tests() {
   if [[ $tap == 1 ]] ; then
     bats --tap ${DIRNAME}/pxc-specific-tests.bats
+  else
+    bats ${DIRNAME}/pxc-specific-tests.bats
   fi
-  bats ${DIRNAME}/pxc-specific-tests.bats
 }
 
 function run_mongodb_specific_tests() {
   if [[ $tap == 1 ]] ; then
     bats --tap ${DIRNAME}/mongodb-tests.bats
+  else
+    bats ${DIRNAME}/mongodb-tests.bats
   fi
-  bats ${DIRNAME}/mongodb-tests.bats
 }
 
 function run_proxysql_tests() {
   if [[ $tap == 1 ]] ; then
     bats --tap ${DIRNAME}/proxysql-tests.bats
+  else
+    bats ${DIRNAME}/proxysql-tests.bats
   fi
-  bats ${DIRNAME}/proxysql-tests.bats
 }
 
 # Additional functions
 function run_create_table() {
   if [[ $tap == 1 ]] ; then
     bash --tap ${DIRNAME}/create_table.sh $1 $2
+  else
+    bash ${DIRNAME}/create_table.sh $1 $2
   fi
-  bash ${DIRNAME}/create_table.sh $1 $2
 }
 
 
