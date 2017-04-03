@@ -22,5 +22,5 @@ MYSQL_SOCK=$(sudo pmm-admin list | grep -i $CLIENT_NAME | grep "mysql:metrics" |
 if [ "$(sysbench --version | cut -d ' ' -f2 | grep -oe '[0-9]\.[0-9]')" == "0.5" ]; then
   sysbench --test=/usr/share/doc/sysbench/tests/db/parallel_prepare.lua --oltp-table-size=$TABLE_SIZE --oltp_tables_count=$TABLE_COUNT --mysql-db=test --mysql-user=root  --num-threads=$TABLE_COUNT --db-driver=mysql --mysql-socket=${MYSQL_SOCK} prepare  2>&1 | tee $WORKDIR/sysbench_prepare.txt
 else
-  sybench /usr/share/sysbench/oltp_insert.lua --table-size=$TABLE_SIZE --tables=$TABLE_COUNT --mysql-db=test --mysql-user=root  --threads=$TABLE_COUNT --db-driver=mysql --mysql-socket=${MYSQL_SOCK} prepare  2>&1 | tee $WORKDIR/sysbench_prepare.txt
+  sysbench /usr/share/sysbench/oltp_insert.lua --table-size=$TABLE_SIZE --tables=$TABLE_COUNT --mysql-db=test --mysql-user=root  --threads=$TABLE_COUNT --db-driver=mysql --mysql-socket=${MYSQL_SOCK} prepare  2>&1 | tee $WORKDIR/sysbench_prepare.txt
 fi
