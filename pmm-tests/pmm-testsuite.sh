@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 WORKDIR="${PWD}"
-DIRNAME="$BATS_TEST_DIRNAME"
+#DIRNAME="$BATS_TEST_DIRNAME"
 DIRNAME=$(dirname "$0")
 # pmm-framework.sh functions
 
