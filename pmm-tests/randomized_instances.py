@@ -67,7 +67,7 @@ def runner(count, i_name, i_count):
     socket = getting_instance_socket()
     for sock in socket:
         workers = [threading.Thread(target=adding_instances(sock), name="thread_"+str(i))
-                    for i in range(i_count)]
+                    for i in range(count)]
         [worker.start() for worker in workers]
         [worker.join() for worker in workers]
 
