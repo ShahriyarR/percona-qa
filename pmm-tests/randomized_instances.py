@@ -13,7 +13,7 @@ def pmm_framework_add_client(i_name, i_count):
     dname = os.path.dirname(abspath)
     command = "{}/pmm-framework.sh --addclient={},{}"
     new_command = command.format(dname, i_name, i_count)
-    process = subprocess.Popen(
+    process = Popen(
                     shlex.split(new_command),
                     stdin=None,
                     stdout=None,
@@ -45,7 +45,7 @@ def adding_instances(sock):
     command = "sudo pmm-admin add mysql --user=root --socket={} {}"
     new_command = command.format(sock, str(uuid.uuid4()))
     print("Running -> " + new_command)
-    process = subprocess.Popen(
+    process = Popen(
                     shlex.split(new_command),
                     stdin=None,
                     stdout=None,
