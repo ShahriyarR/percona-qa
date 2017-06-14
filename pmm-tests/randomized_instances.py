@@ -24,7 +24,7 @@ def getting_instance_socket():
     # For obtaining socket file path for each added instances
     command = "sudo pmm-admin list | grep 'mysql:metrics' | sed 's|.*(||;s|)||'"
     new_command = shlex.split(command)
-    process = Popen(shlex.split(cmd), stdout=PIPE)
+    process = Popen(shlex.split(new_command), stdout=PIPE)
     process.communicate()
 
 getting_instance_socket()
