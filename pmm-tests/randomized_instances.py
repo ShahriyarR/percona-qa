@@ -22,7 +22,7 @@ def call_pmm_framework(i_name, i_count):
 
 def getting_instance_socket():
     # For obtaining socket file path for each added instances
-    command = "sudo pmm-admin list | grep "mysql:metrics" | sed 's|.*(||;s|)||'"
+    command = "sudo pmm-admin list | grep 'mysql:metrics' | sed 's|.*(||;s|)||'"
     new_command = shlex.split(command)
     process = Popen(shlex.split(cmd), stdout=PIPE)
     process.communicate()
