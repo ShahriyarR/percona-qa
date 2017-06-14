@@ -22,7 +22,16 @@ def pmm_framework_add_client(i_name, i_count):
 
 def pmm_framework_wipe_client():
     #TODO
-    pass
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    command = "{}/pmm-framework.sh --wipe-clients"
+    new_command = command.format(dname)
+    process = Popen(
+                    split(new_command),
+                    stdin=None,
+                    stdout=None,
+                    stderr=None)
+    process.communicate()
 
 #call_pmm_framework("ps",2)
 
@@ -53,6 +62,7 @@ def adding_instances(sock):
                     stderr=None)
             
 def runner(count, i_name, i_count):
+    pmm_framework_wipe_client()
     pmm_framework_add_client(i_name, i_count)
     socket = getting_instance_socket()
     for sock in socket:
