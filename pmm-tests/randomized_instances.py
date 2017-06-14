@@ -4,7 +4,7 @@ from shlex import split
 import os
 import uuid
 
-def call_pmm_framework(i_name, i_count):
+def pmm_framework_add_client(i_name, i_count):
     """
     Will call pmm-framework.sh script with given instance name and count.
     """
@@ -18,6 +18,9 @@ def call_pmm_framework(i_name, i_count):
                     stdin=None,
                     stdout=None,
                     stderr=None)
+
+def pmm_framework_wipe_client():
+    pass
 
 #call_pmm_framework("ps",2)
 
@@ -44,6 +47,7 @@ def adding_instances(i_count):
     for sock in socket:
         for m in range(i_count):
             new_command = command.format(sock, str(uuid.uuid4()))
+            print(new_command)
             
         
 
