@@ -1,6 +1,6 @@
 import threading
 from subprocess import check_output
-import shlex
+from shlex import split
 import os
 
 def call_pmm_framework(i_name, i_count):
@@ -20,21 +20,35 @@ def call_pmm_framework(i_name, i_count):
 
 #call_pmm_framework("ps",2)
 
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
+
 def getting_instance_socket():
     # For obtaining socket file path for each added instances
     command = "sudo pmm-admin list | grep 'mysql:metrics' | sed 's|.*(||;s|)||'"
     prc = check_output(command, shell=True)
     return prc.split()
 
-print getting_instance_socket()
+#print getting_instance_socket()
 
 def adding_instances(i_count):
     """
-    Will try to add instances with randomized names based on already added instances
+    Will try to add instances with randomized name, based on already added instances
     """
     # This is a multi-threaded run
-    
-    workers = [threading.Thread(target=backup_obj.run_all(backup_dir="thread_"+str(i)), name="thread_"+str(i))
-                   for i in range(i_count)]
-    [worker.start() for worker in workers]
-    [worker.join() for worker in workers]
+
+    command = "sudo pmm-admin add mysql --user=root --socket={} {}"
+    socket = getting_instance_socket()
+
+    for sock in socket:
+        for m in range(i_count):
+            new_command = command.format(sock, id_generator())
+            
+        
+
+    # workers = [threading.Thread(target=backup_obj.run_all(backup_dir="thread_"+str(i)), name="thread_"+str(i))
+    #                for i in range(i_count)]
+    # [worker.start() for worker in workers]
+    # [worker.join() for worker in workers]
+
+adding_instances(100)
