@@ -1,5 +1,5 @@
 import threading
-from subprocess import Popen, PIPE
+from subprocess import check_output
 import shlex
 import os
 
@@ -23,11 +23,10 @@ def call_pmm_framework(i_name, i_count):
 def getting_instance_socket():
     # For obtaining socket file path for each added instances
     command = "sudo pmm-admin list | grep 'mysql:metrics' | sed 's|.*(||;s|)||'"
-    new_command = shlex.split(command)
-    process = Popen(shlex.split(new_command), stdout=PIPE)
-    process.communicate()
+    prc = check_output(command, shell=True)
+    return prc.split()
 
-getting_instance_socket()
+print getting_instance_socket()
 
 def adding_instances(i_count):
     """
