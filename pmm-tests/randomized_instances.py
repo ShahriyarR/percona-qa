@@ -14,7 +14,7 @@ def pmm_framework_add_client(i_name, i_count):
     command = "{}/pmm-framework.sh --addclient={},{}"
     new_command = command.format(dname, i_name, i_count)
     process = Popen(
-                    shlex.split(new_command),
+                    split(new_command),
                     stdin=None,
                     stdout=None,
                     stderr=None)
@@ -46,7 +46,7 @@ def adding_instances(sock):
     new_command = command.format(sock, str(uuid.uuid4()))
     print("Running -> " + new_command)
     process = Popen(
-                    shlex.split(new_command),
+                    split(new_command),
                     stdin=None,
                     stdout=None,
                     stderr=None)
