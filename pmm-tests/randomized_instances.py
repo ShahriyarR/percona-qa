@@ -67,11 +67,11 @@ def runner(count, i_name, i_count):
     pmm_framework_add_client(i_name, i_count)
     socket = getting_instance_socket()
     for sock in socket:
-        for i in range(count):
-            adding_instances(sock)
-        # workers = [threading.Thread(target=adding_instances(sock), name="thread_"+str(i))
-        #             for i in range(count)]
-        # [worker.start() for worker in workers]
-        # [worker.join() for worker in workers]
+        # for i in range(count):
+        #     adding_instances(sock)
+        workers = [threading.Thread(target=adding_instances(sock), name="thread_"+str(i))
+                    for i in range(count)]
+        [worker.start() for worker in workers]
+        [worker.join() for worker in workers]
 
 runner(100, "ps", 2)
