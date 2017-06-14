@@ -43,7 +43,7 @@ def adding_instances(sock):
 
     command = "sudo pmm-admin add mysql --user=root --socket={} {}"
     new_command = command.format(sock, str(uuid.uuid4()))
-    print("Running -> ", new_command)
+    print("Running -> " + new_command)
             
 def runner(i_count):
     socket = getting_instance_socket()
