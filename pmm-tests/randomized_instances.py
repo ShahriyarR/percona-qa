@@ -15,4 +15,4 @@ def call_pmm_framework(i_name, i_count):
                     stdout=None,
                     stderr=None)
 
-call_pmm_framework(ps,2)
+call_pmm_framework("ps",2)
