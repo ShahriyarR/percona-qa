@@ -10,7 +10,7 @@ def call_pmm_framework(i_name, i_count):
     command = "pmm-framework.sh --addclient={},{}"
     new_command = command.format(i_name, i_count)
     process = subprocess.Popen(
-                    shlex.spkit(new_command),
+                    shlex.split(new_command),
                     stdin=None,
                     stdout=None,
                     stderr=None)
