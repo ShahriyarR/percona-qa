@@ -2,6 +2,7 @@ import threading
 from subprocess import check_output
 from shlex import split
 import os
+import uuid
 
 def call_pmm_framework(i_name, i_count):
     """
@@ -20,8 +21,8 @@ def call_pmm_framework(i_name, i_count):
 
 #call_pmm_framework("ps",2)
 
-def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
-    return ''.join(random.choice(chars) for _ in range(size))
+# def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+#     return ''.join(random.choice(chars) for _ in range(size))
 
 def getting_instance_socket():
     # For obtaining socket file path for each added instances
@@ -42,7 +43,7 @@ def adding_instances(i_count):
 
     for sock in socket:
         for m in range(i_count):
-            new_command = command.format(sock, id_generator())
+            new_command = command.format(sock, str(uuid.uuid4()))
             
         
 
