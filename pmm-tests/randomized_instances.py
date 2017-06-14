@@ -18,6 +18,7 @@ def pmm_framework_add_client(i_name, i_count):
                     stdin=None,
                     stdout=None,
                     stderr=None)
+    process.communicate()
 
 def pmm_framework_wipe_client():
     #TODO
@@ -51,7 +52,8 @@ def adding_instances(sock):
                     stdout=None,
                     stderr=None)
             
-def runner(i_count):
+def runner(count, i_name, i_count):
+    pmm_framework_add_client(i_name, i_count)
     socket = getting_instance_socket()
     for sock in socket:
         workers = [threading.Thread(target=adding_instances(sock), name="thread_"+str(i))
