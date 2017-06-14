@@ -60,7 +60,7 @@ def adding_instances(sock):
                     stdin=None,
                     stdout=None,
                     stderr=None)
-    process.communicate()
+    #process.communicate()
             
 def runner(count, i_name, i_count):
     pmm_framework_wipe_client()
