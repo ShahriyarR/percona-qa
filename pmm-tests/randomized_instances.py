@@ -61,4 +61,4 @@ def runner(count, i_name, i_count):
         [worker.start() for worker in workers]
         [worker.join() for worker in workers]
 
-runner(100, ps, 2)
+runner(100, "ps", 2)
