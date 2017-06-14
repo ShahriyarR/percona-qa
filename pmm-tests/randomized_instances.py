@@ -35,25 +35,22 @@ def getting_instance_socket():
 
 #print getting_instance_socket()
 
-def adding_instances(i_count):
+def adding_instances(sock):
     """
     Will try to add instances with randomized name, based on already added instances
     """
     # This is a multi-threaded run
 
     command = "sudo pmm-admin add mysql --user=root --socket={} {}"
-    socket = getting_instance_socket()
-
-    for sock in socket:
-        for m in range(i_count):
-            new_command = command.format(sock, str(uuid.uuid4()))
-            print(new_command)
+    new_command = command.format(sock, str(uuid.uuid4()))
+    print("Running -> ", new_command)
             
-        
+def runner(i_count):
+    socket = getting_instance_socket()
+    for sock in socket:
+        workers = [threading.Thread(target=adding_instances(sock), name="thread_"+str(i))
+                    for i in range(i_count)]
+        [worker.start() for worker in workers]
+        [worker.join() for worker in workers]
 
-    # workers = [threading.Thread(target=backup_obj.run_all(backup_dir="thread_"+str(i)), name="thread_"+str(i))
-    #                for i in range(i_count)]
-    # [worker.start() for worker in workers]
-    # [worker.join() for worker in workers]
-
-adding_instances(100)
+runner(100)
