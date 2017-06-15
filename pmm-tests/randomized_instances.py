@@ -2,8 +2,7 @@ from subprocess import check_output, Popen
 from shlex import split
 from uuid import uuid4
 from random import randint
-import threading
-import click
+import threading, click, os
 
 ###############################################################################
 # Main logic goes here, below
@@ -125,6 +124,7 @@ def print_version(ctx, param, value):
     "--instance_count",
     type=int,
     nargs=1,
+    default=2,
     required=True,
     help="How many physical instances you want to start? (Passing to pmm-framework.sh)")
 @click.option(
@@ -133,8 +133,7 @@ def print_version(ctx, param, value):
     nargs=1,
     default=2,
     required=True,
-    help="How many pmm instances you want to add with randomized names from each physical instance? (Passing to pmm-admin)"
-)    
+    help="How many pmm instances you want to add with randomized names from each physical instance? (Passing to pmm-admin)")    
 
 
 def run_all(threads, instance_type, instance_count, pmm_instance_count):
