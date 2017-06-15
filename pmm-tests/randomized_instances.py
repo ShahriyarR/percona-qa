@@ -47,24 +47,34 @@ def getting_instance_socket():
     return prc.split()
 
 
-def adding_instances(sock):
+def adding_instances(sock, threads=0):
     """
     Will try to add instances with randomized name, based on already added instances
     """
-    # This is a multi-threaded run
-
-    command = "sudo pmm-admin add mysql --user=root --socket={} --service-port={} {} "
-    new_command = command.format(sock, str(randint(10000, 60000)), str(uuid4()))
-    print("Running -> " + new_command)
-    process = Popen(
-                    split(new_command),
-                    stdin=None,
-                    stdout=None,
-                    stderr=None)
-    # Uncomment below to wait for each command to exit
-    #process.communicate()
+    # Should Not be a multi-threaded run -> see comment at the end of function
+    if threads == 0:
+        command = "sudo pmm-admin add mysql --user=root --socket={} --service-port={} {} "
+        new_command = command.format(sock, str(randint(10000, 60000)), str(uuid4()))
+        print("Running -> " + new_command)
+        process = Popen(
+                        split(new_command),
+                        stdin=None,
+                        stdout=None,
+                        stderr=None)
+        process.communicate()
+    elif threads > 0:
+        command = "sudo pmm-admin add mysql --user=root --socket={} --service-port={} {} "
+        new_command = command.format(sock, str(randint(10000, 60000)), str(uuid4()))
+        print("Running -> " + new_command)
+        process = Popen(
+                        split(new_command),
+                        stdin=None,
+                        stdout=None,
+                        stderr=None)
+        # Untill pmm-admin is not thread-safe there is no need to run with true multi-thread;
+        #process.communicate()
             
-def runner(count, i_name, i_count):
+def runner(pmm_count, i_name, i_count, threads=0):
     """
     Main runner function; using Threading;
     """
@@ -72,17 +82,16 @@ def runner(count, i_name, i_count):
     pmm_framework_add_client(i_name, i_count)
     sockets = getting_instance_socket()
     for sock in sockets:
-        # for i in range(count):
-        #     adding_instances(sock)
-        workers = [threading.Thread(target=adding_instances(sock), name="thread_"+str(i))
-                    for i in range(count)]
-        [worker.start() for worker in workers]
-        [worker.join() for worker in workers]
-
-
-#runner(100, "ps", 2)
-# TODO: pass specific port number to --service-port= global flag -> DONE
-# TODO: Read args from command line - pass values from commandline
+        if threads > 0:
+            # Enabling Threads
+            # Worker count is going to be equal to passed pmm_count
+            workers = [threading.Thread(target=adding_instances(sock, threads), name="thread_"+str(i))
+                        for i in range(pmm_count)]
+            [worker.start() for worker in workers]
+            [worker.join() for worker in workers]
+        elif threads == 0:
+            for i in range(pmm_count):
+                adding_instances(sock, threads)
 
 ##############################################################################
 # Command line things are here, this is separate from main logic of script.
@@ -100,7 +109,42 @@ def print_version(ctx, param, value):
     expose_value=False, 
     is_eager=True,
     help="Version information.")
-###############################################################################
+@click.option(
+    "--threads",
+    type=int,
+    nargs=1,
+    default=0,
+    help="Give non-zero number to enable multi-thread run!")
+@click.option(
+    "--instance_type",
+    type=str,
+    nargs=1,
+    required=True,
+    help="Passing instance type(ps, ms, md, pxc, mo) to pmm-framework.sh")
+@click.option(
+    "--instance_count",
+    type=int,
+    nargs=1,
+    required=True,
+    help="How many physical instances you want to start? (Passing to pmm-framework.sh)")
+@click.option(
+    "--pmm_instance_count",
+    type=int,
+    nargs=1,
+    default=2,
+    required=True,
+    help="How many pmm instances you want to add with randomized names from each physical instance? (Passing to pmm-admin)"
+)    
+
+
+def run_all(threads, instance_type, instance_count, pmm_instance_count):
+    if (not threads) and (not instance_type) and (not instance_count) and (not pmm_instance_count):
+        print("ERROR: you must give an option, run with --help for available options")
+    else:
+        runner(pmm_instance_count, instance_type, instance_count, threads)
+    
 
 if __name__ == "__main__":
-    runner(100, "ps", 2)
+    run_all()
+
+###############################################################################
