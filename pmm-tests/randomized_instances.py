@@ -3,6 +3,7 @@ from subprocess import check_output, Popen
 from shlex import split
 import os
 import uuid
+import random
 
 def pmm_framework_add_client(i_name, i_count):
     """
@@ -52,8 +53,8 @@ def adding_instances(sock):
     """
     # This is a multi-threaded run
 
-    command = "sudo pmm-admin add mysql --user=root --socket={} {}"
-    new_command = command.format(sock, str(uuid.uuid4()))
+    command = "sudo pmm-admin add mysql --user=root --socket={} --service-port={} {} "
+    new_command = command.format(sock, str(random.randint(10000, 99999)), str(uuid.uuid4()))
     print("Running -> " + new_command)
     process = Popen(
                     split(new_command),
@@ -75,3 +76,4 @@ def runner(count, i_name, i_count):
         [worker.join() for worker in workers]
 
 runner(100, "ps", 2)
+# TODO: pass specific port number to --service-port= global flag
