@@ -131,7 +131,7 @@ def print_version(ctx, param, value):
     "--pmm_instance_count",
     type=int,
     nargs=1,
-    default=2,
+    #default=2,
     required=True,
     help="How many pmm instances you want to add with randomized names from each physical instance? (Passing to pmm-admin)")    
 
