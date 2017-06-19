@@ -79,7 +79,7 @@ done
 		URI=${i}
 	  run sudo pmm-admin add mongodb:queries --uri ${URI}  mongo_queries_${COUNTER} --dev-enable
 	  [ "$status" -eq 0 ]
-	  echo "${lines[1]}" | grep "OK, now monitoring"
+	  echo "${lines[0]}" | grep "OK, now monitoring"
   done
 }
 
@@ -90,6 +90,6 @@ done
 		URI=${i}
 	  run sudo pmm-admin rm mongodb:queries mongo_queries_${COUNTER} --dev-enable
 	  [ "$status" -eq 0 ]
-	  echo "${lines[1]}" | grep "OK, removed"
+	  echo "${lines[0]}" | grep "OK, removed"
   done
 }
