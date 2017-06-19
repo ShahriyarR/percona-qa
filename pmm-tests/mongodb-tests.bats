@@ -62,6 +62,7 @@ for i in $(sudo pmm-admin list | grep "mongodb_instance_" | awk '{print $5}' | g
 	run sudo pmm-admin rm mongodb mongodb_instance_${COUNTER}
   [ "$status" -eq 0 ]
   echo "${lines[1]}" | grep "OK, removed"
+done
 }
 
 # @test "run pmm-admin rm mongodb named" {
