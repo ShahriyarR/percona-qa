@@ -19,7 +19,7 @@ echo "$output"
     [ "${lines[0]}" = "Usage:" ]
 }
 
-@test "run pmm-admin add mongodb" {
+@test "run pmm-admin add mongodb based on running instances" {
 	COUNTER=0
   for i in $(sudo pmm-admin list | grep "mongo" | awk '{print $5}' | grep -v '-') ; do
 		let COUNTER=COUNTER+1
@@ -31,9 +31,9 @@ echo "$output"
   done
 }
 
-@test "run pmm-admin add mongodb again" {
+@test "run pmm-admin add mongodb again based on running instances" {
 	COUNTER=0
-	for i in $(sudo pmm-admin list | grep "mongo" | awk '{print $5}' | grep -v '-') ; do
+	for i in $(sudo pmm-admin list | grep "mongodb_instance_" | awk '{print $5}' | grep -v '-') ; do
 		let COUNTER=COUNTER+1
 		URI=${i}
 		run sudo pmm-admin add mongodb --uri ${URI} mongodb_instance_${COUNTER}
