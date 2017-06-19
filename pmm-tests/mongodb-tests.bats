@@ -84,8 +84,12 @@ done
 }
 
 @test "run pmm-admin rm mongodb queries" {
-  run sudo pmm-admin rm mongodb mongo-queries --dev-enable
-  [ "$status" -eq 0 ]
-  echo "${lines[0]}" | grep "OK, no system"
-  echo "${lines[1]}" | grep "OK, removed"
+	COUNTER=0
+  for i in $(sudo pmm-admin list | grep "mongodb_instance_" | awk '{print $5}' | grep -v '-') ; do
+		let COUNTER=COUNTER+1
+		URI=${i}
+	  run sudo pmm-admin rm mongodb mongo-queries --dev-enable  mongodb_instance_${COUNTER}
+	  [ "$status" -eq 0 ]
+	  echo "${lines[1]}" | grep "OK, removed"
+  done
 }
