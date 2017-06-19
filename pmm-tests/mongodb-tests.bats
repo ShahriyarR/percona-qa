@@ -21,36 +21,41 @@ echo "$output"
 
 @test "run pmm-admin add mongodb" {
 	COUNTER=0
-for i in $(sudo pmm-admin list | grep "mongo" | awk '{print $5}' | grep -v '-') ; do
+  for i in $(sudo pmm-admin list | grep "mongo" | awk '{print $5}' | grep -v '-') ; do
 		let COUNTER=COUNTER+1
 		URI=${i}
 	  run sudo pmm-admin add mongodb --uri ${URI} mongodb_instance_${COUNTER}
 	  [ "$status" -eq 0 ]
 	  #echo "${lines[0]}" | grep "OK, already"
 	  echo "${lines[1]}" | grep "OK, now monitoring"
-done
+  done
 }
 
 @test "run pmm-admin add mongodb again" {
-  run sudo pmm-admin add mongodb
-  [ "$status" -eq 0 ]
-  echo "${lines[0]}" | grep "OK, already"
-  echo "${lines[1]}" | grep "OK, already"
+	COUNTER=0
+	for i in $(sudo pmm-admin list | grep "mongo" | awk '{print $5}' | grep -v '-') ; do
+		let COUNTER=COUNTER+1
+		URI=${i}
+		run sudo pmm-admin add mongodb --uri ${URI} mongodb_instance_${COUNTER}
+		[ "$status" -eq 0 ]
+		#echo "${lines[0]}" | grep "OK, already"
+		echo "${lines[1]}" | grep "OK, already"
+	done
 }
 
-@test "run pmm-admin add mongodb named" {
-  run sudo pmm-admin add mongodb mymongo1
-  [ "$status" -eq 0 ]
-  echo "${lines[0]}" | grep "OK, already"
-  echo "${lines[1]}" | grep "OK, now monitoring"
-}
-
-@test "run pmm-admin add mongodb name again" {
-  run sudo pmm-admin add mongodb mymongo1
-  [ "$status" -eq 0 ]
-  echo "${lines[0]}" | grep "OK, already"
-  echo "${lines[1]}" | grep "OK, already"
-}
+# @test "run pmm-admin add mongodb named" {
+#   run sudo pmm-admin add mongodb mymongo1
+#   [ "$status" -eq 0 ]
+#   echo "${lines[0]}" | grep "OK, already"
+#   echo "${lines[1]}" | grep "OK, now monitoring"
+# }
+#
+# @test "run pmm-admin add mongodb name again" {
+#   run sudo pmm-admin add mongodb mymongo1
+#   [ "$status" -eq 0 ]
+#   echo "${lines[0]}" | grep "OK, already"
+#   echo "${lines[1]}" | grep "OK, already"
+# }
 
 @test "run pmm-admin rm mongodb" {
   run sudo pmm-admin rm mongodb
