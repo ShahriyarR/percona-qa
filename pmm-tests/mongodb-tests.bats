@@ -77,7 +77,7 @@ done
   for i in $(sudo pmm-admin list | grep "mongo" | awk '{print $5}' | grep -v '-') ; do
 		let COUNTER=COUNTER+1
 		URI=${i}
-	  run sudo pmm-admin add mongodb --uri ${URI} mongo-queries --dev-enable  mongodb_instance_${COUNTER}
+	  run sudo pmm-admin add mongodb:queries --uri ${URI}  mongo_queries_${COUNTER} --dev-enable
 	  [ "$status" -eq 0 ]
 	  echo "${lines[1]}" | grep "OK, now monitoring"
   done
@@ -85,10 +85,10 @@ done
 
 @test "run pmm-admin rm mongodb queries" {
 	COUNTER=0
-  for i in $(sudo pmm-admin list | grep "mongodb_instance_" | awk '{print $5}' | grep -v '-') ; do
+  for i in $(sudo pmm-admin list | grep "mongo_queries_" | awk '{print $5}' | grep -v '-') ; do
 		let COUNTER=COUNTER+1
 		URI=${i}
-	  run sudo pmm-admin rm mongodb mongo-queries --dev-enable  mongodb_instance_${COUNTER}
+	  run sudo pmm-admin rm mongodb:queries mongo_queries_${COUNTER} --dev-enable
 	  [ "$status" -eq 0 ]
 	  echo "${lines[1]}" | grep "OK, removed"
   done
