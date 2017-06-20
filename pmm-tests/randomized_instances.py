@@ -99,8 +99,10 @@ def create_db(db_count, i_type):
     Function to create given amount of databases.
     Using simple bash commands from already existing scripts.
     """
-
-    bash_command = 'if [[ "{}" == "ps" ]]; then \
+    # Getting current work dir
+    cwd = os.getcwd()
+    bash_command = 'WORKDIR="{}"\
+                    if [[ "{}" == "ps" ]]; then \
                       BASEDIR=$(ls -1td ?ercona-?erver-5.* | grep -v ".tar" | head -n1) \
                       BASEDIR="$WORKDIR/$BASEDIR" \
                     elif [[ "{}" == "ms" ]]; then \
@@ -111,7 +113,7 @@ def create_db(db_count, i_type):
                       BASEDIR="$WORKDIR/$BASEDIR" \
                     fi \
                     echo $BASEDIR'
-    new_command = bash_command.format(i_type, i_type, i_type)
+    new_command = bash_command.format(cwd, i_type, i_type, i_type)
     process = Popen(split(new_command), stdout=PIPE)
     # Getting basedir path here as output
     output, error = process.communicate()
