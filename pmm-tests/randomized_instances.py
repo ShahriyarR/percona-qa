@@ -1,4 +1,4 @@
-from subprocess import check_output, Popen
+from subprocess import check_output, Popen, PIPE
 from shlex import split
 from uuid import uuid4
 from random import randint
@@ -112,7 +112,7 @@ def create_db(db_count, i_type):
                     fi \
                     echo $BASEDIR'
     new_command = bash_command.format(i_type, i_type, i_type)
-    process = Popen(new_command.split(), stdout=subprocess.PIPE)
+    process = Popen(split(new_command), stdout=PIPE)
     # Getting basedir path here as output
     output, error = process.communicate()
     # Getting sockets to connect from mysql client
