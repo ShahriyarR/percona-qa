@@ -100,18 +100,18 @@ def create_db(db_count, i_type):
     Using simple bash commands from already existing scripts.
     """
 
-    bash_command = 'if [[ "${CLIENT_NAME}" == "{}" ]]; then \
+    bash_command = 'if [[ "{}" == "ps" ]]; then \
                       BASEDIR=$(ls -1td ?ercona-?erver-5.* | grep -v ".tar" | head -n1) \
                       BASEDIR="$WORKDIR/$BASEDIR" \
-                    elif [[ "${CLIENT_NAME}" == "{}" ]]; then \
+                    elif [[ "{}" == "ms" ]]; then \
                       BASEDIR=$(ls -1td mysql-5.* | grep -v ".tar" | head -n1) \
                       BASEDIR="$WORKDIR/$BASEDIR" \
-                    elif [[ "${CLIENT_NAME}" == "{}" ]]; then \
+                    elif [[ "{}" == "pxc" ]]; then \
                       BASEDIR=$(ls -1td Percona-XtraDB-Cluster-5.* | grep -v ".tar" | head -n1) \
                       BASEDIR="$WORKDIR/$BASEDIR" \
                     fi \
                     echo $BASEDIR'
-    new_command = bash_command.format(i_type)
+    new_command = bash_command.format(i_type, i_type, i_type)
     process = subprocess.Popen(new_command.split(), stdout=subprocess.PIPE)
     # Getting basedir path here as output
     output, error = process.communicate()
