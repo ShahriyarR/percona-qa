@@ -118,7 +118,7 @@ def create_db(db_count, i_type):
     # Getting sockets to connect from mysql client
     sockets = getting_instance_socket()
     for sock in sockets:
-        for i range(db_count):
+        for i in range(db_count):
             my_command = '{}/bin/mysql -u root --socket={} -e "create database strest_test_db_{}"'
             new_my_command = my_command.format(output, sock, i)
             print("Running db create command -> " + new_my_command)
