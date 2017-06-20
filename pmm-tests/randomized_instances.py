@@ -114,6 +114,7 @@ def create_db(db_count, i_type):
                     fi \
                     echo $BASEDIR'
     new_command = bash_command.format(cwd, i_type, i_type, i_type)
+    print(new_command)
     process = Popen(split(new_command), stdout=PIPE)
     # Getting basedir path here as output
     output, error = process.communicate()
