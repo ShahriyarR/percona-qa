@@ -72,7 +72,7 @@ def adding_instances(sock, threads=0):
                         stderr=None)
         # Untill pmm-admin is not thread-safe there is no need to run with true multi-thread;
         #process.communicate()
-            
+
 def runner(pmm_count, i_name, i_count, threads=0):
     """
     Main runner function; using Threading;
@@ -91,6 +91,46 @@ def runner(pmm_count, i_name, i_count, threads=0):
         elif threads == 0:
             for i in range(pmm_count):
                 adding_instances(sock, threads)
+    return 1
+
+
+def create_db(db_count, i_type):
+    """
+    Function to create given amount of databases.
+    Using simple bash commands from already existing scripts.
+    """
+
+    bash_command = 'if [[ "${CLIENT_NAME}" == "{}" ]]; then \
+                      BASEDIR=$(ls -1td ?ercona-?erver-5.* | grep -v ".tar" | head -n1) \
+                      BASEDIR="$WORKDIR/$BASEDIR" \
+                    elif [[ "${CLIENT_NAME}" == "{}" ]]; then \
+                      BASEDIR=$(ls -1td mysql-5.* | grep -v ".tar" | head -n1) \
+                      BASEDIR="$WORKDIR/$BASEDIR" \
+                    elif [[ "${CLIENT_NAME}" == "{}" ]]; then \
+                      BASEDIR=$(ls -1td Percona-XtraDB-Cluster-5.* | grep -v ".tar" | head -n1) \
+                      BASEDIR="$WORKDIR/$BASEDIR" \
+                    fi \
+                    echo $BASEDIR'
+    new_command = bash_command.format(i_type)
+    process = subprocess.Popen(new_command.split(), stdout=subprocess.PIPE)
+    # Getting basedir path here as output
+    output, error = process.communicate()
+    # Getting sockets to connect from mysql client
+    sockets = getting_instance_socket()
+    for sock in sockets:
+        for i range(db_count):
+            my_command = '{}/bin/mysql -u root --socket={} -e "create database strest_test_db_{}"'
+            new_my_command = my_command.format(output, sock, i)
+            print("Running db create command -> " + new_my_command)
+            process = Popen(
+                            split(new_my_command),
+                            stdin=None,
+                            stdout=None,
+                            stderr=None)
+
+
+
+
 
 ##############################################################################
 # Command line things are here, this is separate from main logic of script.
@@ -99,13 +139,13 @@ def print_version(ctx, param, value):
         return
     click.echo("PMM Stress Test Suite Version 1.0")
     ctx.exit()
- 
+
 @click.command()
 @click.option(
-    '--version', 
-    is_flag=True, 
+    '--version',
+    is_flag=True,
     callback=print_version,
-    expose_value=False, 
+    expose_value=False,
     is_eager=True,
     help="Version information.")
 @click.option(
@@ -133,15 +173,25 @@ def print_version(ctx, param, value):
     nargs=1,
     #default=2,
     required=True,
-    help="How many pmm instances you want to add with randomized names from each physical instance? (Passing to pmm-admin)")    
+    help="How many pmm instances you want to add with randomized names from each physical instance? (Passing to pmm-admin)")
+@click.option(
+    "--create_databases",
+    type=int,
+    nargs=1,
+    default=0,
+    help="How many databases to create per added instance for stress test?")
+
+
 
 
 def run_all(threads, instance_type, instance_count, pmm_instance_count):
-    if (not threads) and (not instance_type) and (not instance_count) and (not pmm_instance_count):
+    if (not threads) and (not instance_type) and (not instance_count) and (not pmm_instance_count) and (not create_databases):
         print("ERROR: you must give an option, run with --help for available options")
     else:
         runner(pmm_instance_count, instance_type, instance_count, threads)
-    
+        if create_databases:
+            create_db(create_databases, instance_type)
+
 
 if __name__ == "__main__":
     run_all()
