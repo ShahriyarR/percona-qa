@@ -190,7 +190,7 @@ def print_version(ctx, param, value):
 
 
 
-def run_all(threads, instance_type, instance_count, pmm_instance_count, create_databases):
+def run_all(threads, instance_type, instance_count, pmm_instance_count, create_databases, create_tables):
     if (not threads) and (not instance_type) and (not instance_count) and (not pmm_instance_count) and (not create_databases):
         print("ERROR: you must give an option, run with --help for available options")
     else:
