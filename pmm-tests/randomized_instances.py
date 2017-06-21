@@ -112,7 +112,7 @@ def create_db(db_count, i_type):
     output, error = process.communicate()
     #process.communicate()
 
-def create_tables(table_count, i_type):
+def create_table(table_count, i_type):
     """
     Function to create given amount of tables.
     Using create_table.sh script here.
