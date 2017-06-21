@@ -110,8 +110,8 @@ def create_db(db_count, i_type):
                     stdout=None,
                     stderr=None)
     # Getting basedir path here as output
-    #output, error = process.communicate()
-    process.communicate()
+    output, error = process.communicate()
+    #process.communicate()
 
 
 

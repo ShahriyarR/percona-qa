@@ -1,3 +1,4 @@
+#!/bin/bash
 CLIENT_NAME=$1
 DB_COUNT=$2
 WORKDIR="${PWD}"
