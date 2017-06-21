@@ -103,18 +103,15 @@ def create_db(db_count, i_type):
     dname = os.path.dirname(abspath)
     bash_command = '{}/create_database.sh {} {}'
     new_command = bash_command.format(dname, i_type, db_count)
-    try:
-        process = Popen(
-                        split(new_command),
-                        stdin=None,
-                        stdout=None,
-                        stderr=None)
+
+    process = Popen(
+                    split(new_command),
+                    stdin=None,
+                    stdout=None,
+                    stderr=None)
     # Getting basedir path here as output
-        output, error = process.communicate()
-    except Exception as e:
-        print e
-    else:
-        return 1
+    #output, error = process.communicate()
+    process.communicate()
 
 
 
