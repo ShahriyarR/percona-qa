@@ -97,40 +97,16 @@ def runner(pmm_count, i_name, i_count, threads=0):
 def create_db(db_count, i_type):
     """
     Function to create given amount of databases.
-    Using simple bash commands from already existing scripts.
+    Using create_database.sh script here.
     """
-    # Getting current work dir
-    cwd = os.getcwd()
-    bash_command = 'WORKDIR="{}"\
-                    if [[ "{}" == "ps" ]]; then \
-                      BASEDIR=$(ls -1td ?ercona-?erver-5.* | grep -v ".tar" | head -n1) \
-                      BASEDIR="$WORKDIR/$BASEDIR" \
-                    elif [[ "{}" == "ms" ]]; then \
-                      BASEDIR=$(ls -1td mysql-5.* | grep -v ".tar" | head -n1) \
-                      BASEDIR="$WORKDIR/$BASEDIR" \
-                    elif [[ "{}" == "pxc" ]]; then \
-                      BASEDIR=$(ls -1td Percona-XtraDB-Cluster-5.* | grep -v ".tar" | head -n1) \
-                      BASEDIR="$WORKDIR/$BASEDIR" \
-                    fi \
-                    echo $BASEDIR'
-    new_command = bash_command.format(cwd, i_type, i_type, i_type)
-    print(new_command)
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    bash_command = '{}/create_database.sh {} {}'
+    new_command = bash_command.format(i_type, db_count)
     process = Popen(split(new_command), stdout=PIPE)
     # Getting basedir path here as output
     output, error = process.communicate()
-    # Getting sockets to connect from mysql client
-    sockets = getting_instance_socket()
-    for sock in sockets:
-        for i in range(db_count):
-            my_command = '{}/bin/mysql -u root --socket={} -e "create database strest_test_db_{}"'
-            new_my_command = my_command.format(output, sock, i)
-            print("Running db create command -> " + new_my_command)
-            process = Popen(
-                            split(new_my_command),
-                            stdin=None,
-                            stdout=None,
-                            stderr=None)
-
+    return 1
 
 
 
