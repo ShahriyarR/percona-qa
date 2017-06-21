@@ -120,7 +120,7 @@ def create_table(table_count, i_type):
     abspath = os.path.abspath(__file__)
     dname = os.path.dirname(abspath)
     bash_command = '{}/create_table.sh {} {}'
-    new_command = bash_command.format(dname, i_type, db_count)
+    new_command = bash_command.format(dname, i_type, table_count)
 
     process = Popen(
                     split(new_command),
