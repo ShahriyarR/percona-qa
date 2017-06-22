@@ -73,6 +73,13 @@ def adding_instances(sock, threads=0):
         # Untill pmm-admin is not thread-safe there is no need to run with true multi-thread;
         #process.communicate()
 
+def repeat_adding_instances(sock, threads, count, i, pmm_count):
+    for j in range(count):
+        adding_instances(sock, threads)
+
+        if j + i * count >= pmm_count:
+            break
+
 def runner(pmm_count, i_name, i_count, threads=0):
     """
     Main runner function; using Threading;
@@ -80,24 +87,15 @@ def runner(pmm_count, i_name, i_count, threads=0):
     pmm_framework_wipe_client()
     pmm_framework_add_client(i_name, i_count)
     sockets = getting_instance_socket()
-    q = Queue.Queue(maxsize=pmm_count)
-    #pool_sema = threading.BoundedSemaphore(max_instances)
     for sock in sockets:
         if threads > 0:
             # Enabling Threads
             # Worker count is going to be equal to passed pmm_count
-            workers = [threading.Thread(target=adding_instances(sock, threads), name="thread_"+str(i))
-                                for i in range(threads)]
+            count = math.ceil(pmm_count/10)
+            workers = [threading.Thread(target=repeat_adding_instances(sock, threads, count, i, pmm_count), name="thread_"+str(i))
+                                for i in range(count)]
             [worker.start() for worker in workers]
-
-            while True:
-                try:
-                    #[worker.join() for worker in workers]
-                    for worker in workers:
-                        worker.join()
-                        q.put(1)
-                except Queue.Full as e:
-                    break
+            [worker.join() for worker in workers]
 
         elif threads == 0:
             for i in range(pmm_count):
