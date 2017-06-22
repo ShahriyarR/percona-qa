@@ -98,6 +98,7 @@ def runner(pmm_count, i_name, i_count, threads=0):
             # Workers count is equal to passed threads number, \
             # and we have to divide pmm_count to workers count to get loop range for every thread
             count = int(math.ceil(pmm_count/float(threads)))
+            print count
             workers = [threading.Thread(target=repeat_adding_instances(sock, threads, count, i, pmm_count), name="thread_"+str(i))
                                 for i in range(threads)]
             [worker.start() for worker in workers]
