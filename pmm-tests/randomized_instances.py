@@ -74,6 +74,7 @@ def adding_instances(sock, threads=0):
         #process.communicate()
 
 def repeat_adding_instances(sock, threads, count, i, pmm_count):
+    global count = count
     for j in range(count):
         adding_instances(sock, threads)
 
