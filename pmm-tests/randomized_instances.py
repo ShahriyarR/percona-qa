@@ -91,7 +91,7 @@ def runner(pmm_count, i_name, i_count, threads=0):
         if threads > 0:
             # Enabling Threads
             # Worker count is going to be equal to passed pmm_count
-            count = math.ceil(pmm_count/10)
+            count = int(math.ceil(pmm_count/10))
             workers = [threading.Thread(target=repeat_adding_instances(sock, threads, count, i, pmm_count), name="thread_"+str(i))
                                 for i in range(count)]
             [worker.start() for worker in workers]
