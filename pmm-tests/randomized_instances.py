@@ -152,7 +152,7 @@ def create_sleep_query(query_count, i_type):
     abspath = os.path.abspath(__file__)
     dname = os.path.dirname(abspath)
     bash_command = '{}/create_sleep_queries.sh {} {}'
-    new_command = bash_command.format(dname, i_type, table_count)
+    new_command = bash_command.format(dname, i_type, query_count)
 
     process = Popen(
                     split(new_command),
