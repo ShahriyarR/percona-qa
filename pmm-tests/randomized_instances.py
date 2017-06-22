@@ -92,6 +92,8 @@ def runner(pmm_count, i_name, i_count, threads=0):
                                 for i in range(threads)]
                     [worker.start() for worker in workers]
                     [worker.join() for worker in workers]
+                finally:
+                    print("Finished")    
         elif threads == 0:
             for i in range(pmm_count):
                 adding_instances(sock, threads)
