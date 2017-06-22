@@ -80,14 +80,18 @@ def runner(pmm_count, i_name, i_count, threads=0):
     pmm_framework_wipe_client()
     pmm_framework_add_client(i_name, i_count)
     sockets = getting_instance_socket()
+    max_instances = pmm_count
+    pool_sema = threading.BoundedSemaphore(max_instances)
     for sock in sockets:
         if threads > 0:
             # Enabling Threads
             # Worker count is going to be equal to passed pmm_count
-            workers = [threading.Thread(target=adding_instances(sock, threads), name="thread_"+str(i))
-                        for i in range(pmm_count)]
-            [worker.start() for worker in workers]
-            [worker.join() for worker in workers]
+            with pool_sema:
+                try:
+                    workers = [threading.Thread(target=adding_instances(sock, threads), name="thread_"+str(i))
+                                for i in range(threads)]
+                    [worker.start() for worker in workers]
+                    [worker.join() for worker in workers]
         elif threads == 0:
             for i in range(pmm_count):
                 adding_instances(sock, threads)
