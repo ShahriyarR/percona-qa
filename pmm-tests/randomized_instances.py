@@ -74,12 +74,10 @@ def adding_instances(sock, threads=0):
         #process.communicate()
 
 def repeat_adding_instances(sock, threads, count, i, pmm_count):
-    global cnt
-    cnt = count
-    for j in range(cnt):
+    for j in range(count):
         adding_instances(sock, threads)
 
-        if j + i * cnt >= pmm_count:
+        if j + i * count >= pmm_count:
             break
 
 def runner(pmm_count, i_name, i_count, threads=0):
@@ -93,9 +91,9 @@ def runner(pmm_count, i_name, i_count, threads=0):
         if threads > 0:
             # Enabling Threads
             # Worker count is going to be equal to passed pmm_count
-            count = int(math.ceil(pmm_count/10))
+            count = int(math.ceil(pmm_count/threads))
             workers = [threading.Thread(target=repeat_adding_instances(sock, threads, count, i, pmm_count), name="thread_"+str(i))
-                                for i in range(count)]
+                                for i in range(threads)]
             [worker.start() for worker in workers]
             [worker.join() for worker in workers]
 
