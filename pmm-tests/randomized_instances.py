@@ -79,7 +79,7 @@ def repeat_adding_instances(sock, threads, count, i, pmm_count):
     for j in range(cnt):
         adding_instances(sock, threads)
 
-        if j + i * count >= pmm_count:
+        if j + i * cnt >= pmm_count:
             break
 
 def runner(pmm_count, i_name, i_count, threads=0):
