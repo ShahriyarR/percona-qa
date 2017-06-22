@@ -2,7 +2,7 @@ from subprocess import check_output, Popen, PIPE
 from shlex import split
 from uuid import uuid4
 from random import randint
-import threading, click, os
+import threading, click, os, Queue
 
 ###############################################################################
 # Main logic goes here, below
@@ -80,20 +80,23 @@ def runner(pmm_count, i_name, i_count, threads=0):
     pmm_framework_wipe_client()
     pmm_framework_add_client(i_name, i_count)
     sockets = getting_instance_socket()
-    max_instances = pmm_count
-    pool_sema = threading.BoundedSemaphore(max_instances)
+    q = Queue.Queue(maxsize=pmm_count)
+    #pool_sema = threading.BoundedSemaphore(max_instances)
     for sock in sockets:
         if threads > 0:
             # Enabling Threads
             # Worker count is going to be equal to passed pmm_count
-            with pool_sema:
-                try:
-                    workers = [threading.Thread(target=adding_instances(sock, threads), name="thread_"+str(i))
+            workers = [threading.Thread(target=adding_instances(sock, threads), name="thread_"+str(i))
                                 for i in range(threads)]
-                    [worker.start() for worker in workers]
+            while True:
+                try:
+                    for worker in workers:
+                        worker.start()
+                        q.put(1)
                     [worker.join() for worker in workers]
-                finally:
-                    print("Finished")    
+                except Queue.Full as e:
+                    break
+
         elif threads == 0:
             for i in range(pmm_count):
                 adding_instances(sock, threads)
