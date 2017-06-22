@@ -88,12 +88,14 @@ def runner(pmm_count, i_name, i_count, threads=0):
             # Worker count is going to be equal to passed pmm_count
             workers = [threading.Thread(target=adding_instances(sock, threads), name="thread_"+str(i))
                                 for i in range(threads)]
+            [worker.start() for worker in workers]
+
             while True:
                 try:
+                    #[worker.join() for worker in workers]
                     for worker in workers:
-                        worker.start()
+                        worker.join()
                         q.put(1)
-                    [worker.join() for worker in workers]
                 except Queue.Full as e:
                     break
 
