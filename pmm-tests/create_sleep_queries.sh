@@ -22,6 +22,6 @@ for i in $(sudo pmm-admin list | grep "mysql:metrics" | sed 's|.*(||;s|)||') ; d
 	MYSQL_SOCK=${i}
   echo "Creating sleep() queries using MYSQL_SOCK=${MYSQL_SOCK}"
   for num in $(seq 1 1 ${QUERY_COUNT}) ; do
-	    ${BASEDIR}/bin/mysql --user=${MYSQL_USER} --socket=${MYSQL_SOCK} -e "select sleep(10000000)"
+	    ${BASEDIR}/bin/mysql --user=${MYSQL_USER} --socket=${MYSQL_SOCK} -e "select sleep(10000000)" & fg
   done
 done
