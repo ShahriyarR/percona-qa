@@ -22,6 +22,6 @@ for i in $(sudo pmm-admin list | grep "mysql:metrics" | sed 's|.*(||;s|)||') ; d
 	MYSQL_SOCK=${i}
   echo "Creating databases using MYSQL_SOCK=${MYSQL_SOCK}"
   for num in $(seq 1 1 ${DB_COUNT}) ; do
-	    ${BASEDIR}/bin/mysql --user=${MYSQL_USER} --socket=${MYSQL_SOCK} -e "create database pmm_stress_test_${num}" &
+	    ${BASEDIR}/bin/mysql --user=${MYSQL_USER} --socket=${MYSQL_SOCK} -e "create database pmm_stress_test_${num}"
   done
 done
