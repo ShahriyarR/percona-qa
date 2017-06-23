@@ -144,6 +144,7 @@ def create_table(table_count, i_type):
                     stderr=None)
     output, error = process.communicate()
 
+# TODO: Do this in multi-thread or do some trick with bash side
 def create_sleep_query(query_count, i_type):
     """
     Function to create given amount of sleep() queries.
