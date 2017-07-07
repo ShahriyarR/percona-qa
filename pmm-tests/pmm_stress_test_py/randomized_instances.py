@@ -174,7 +174,29 @@ def create_table(table_count, i_type):
     else:
         return 0
 
-def create_sleep_query(query_count, i_type):
+def creating_sleep_query(sock):
+    try:
+        cnx = mysql.connector.connect(user='root', unix_socket=sock, host='localhost')
+        cursor = cnx.cursor()
+        cursor.execute("SELECT SLEEP(1000000000)")
+    except Exception as ex:
+        print(ex)
+    finally:
+        cursor.close()
+        cnx.close()
+
+def repeat_creating_sleep_query(sock, count, i, query_count):
+    for j in range(count):
+        # For eg, with --pmm_instance_count 20 --threads 10
+        # Here count = 2 from previous function
+        # 0 + 1 + 10 * 2 >= 20
+        # 1 + 1 + 10 * 2 >= 20
+        if j + i * count >= query_count:
+            break
+
+        creating_sleep_query(sock)
+
+def run_sleep_query(query_count, threads=10):
     """
     Function to create given amount of sleep() queries.
     Using create_sleep_queries.sh script here
@@ -182,21 +204,16 @@ def create_sleep_query(query_count, i_type):
     sockets = getting_instance_socket()
     try:
         for sock in sockets:
-            cnx = mysql.connector.connect(user='root', unix_socket=sock, host='localhost')
-            cursor = cnx.cursor(buffered=False)
 
-            for i in range(query_count):
-                stmt="SELECT SLEEP(1000000000)"
-                print(stmt)
-                cursor.execute(stmt)
+            count = int(math.ceil(query_count/float(threads)))
+            workers = [threading.Thread(target=repeat_creating_sleep_query(sock, count, i, query_count), name="thread_"+str(i))
+                                for i in range(threads)]
+            [worker.start() for worker in workers]
+            [worker.join() for worker in workers]
     except Exception as err:
         print(err)
     else:
         return 0
-    finally:
-        cursor.close()
-        cnx.close()
-
     # abspath = os.path.abspath(__file__)
     # dname = os.path.dirname(abspath)
     # bash_command = '{}/create_sleep_queries.sh {} {}'
@@ -330,9 +347,9 @@ def print_version(ctx, param, value):
 @click.option(
     "--create_sleep_queries",
     type=int,
-    nargs=1,
+    nargs=2,
     default=0,
-    help="How many connections to open with 'select sleep()' per added instance for stress test?")
+    help="How many 'select sleep()' queries to run? 1->query count, 2->thread count")
 @click.option(
     "--create_unique_queries",
     type=int,
@@ -370,7 +387,8 @@ def run_all(threads, instance_type,
         if create_tables:
             create_table(create_tables, instance_type)
         if create_sleep_queries:
-            create_sleep_query(create_sleep_queries, instance_type)
+            #create_sleep_query(create_sleep_queries, instance_type)
+            run_sleep_query()
         if create_unique_queries:
             create_unique_query(create_unique_queries, instance_type)
         if insert_blobs:
