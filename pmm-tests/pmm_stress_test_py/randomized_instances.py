@@ -183,7 +183,7 @@ def create_sleep_query(query_count, i_type):
     try:
         for sock in sockets:
             cnx = mysql.connector.connect(user='root', unix_socket=sock, host='localhost')
-            cursor = cnx.cursor(buffered=True)
+            cursor = cnx.cursor(buffered=False)
 
             for i in range(query_count):
                 stmt="SELECT SLEEP(1000000000)"
