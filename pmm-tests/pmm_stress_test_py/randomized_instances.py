@@ -228,21 +228,6 @@ def run_sleep_query(query_count, i_type, threads=10):
         print(e)
     else:
         return 0
-    # abspath = os.path.abspath(__file__)
-    # dname = os.path.dirname(abspath)
-    # bash_command = '{}/create_sleep_queries.sh {} {}'
-    # new_command = bash_command.format(dname[:-18], i_type, query_count)
-    # try:
-    #     process = Popen(
-    #                     split(new_command),
-    #                     stdin=None,
-    #                     stdout=None,
-    #                     stderr=None)
-    # except Exception as e:
-    #     print(e)
-    # else:
-    #     return 0
-    #output, error = process.communicate()
 
 def create_unique_query(query_count, i_type):
     """
@@ -363,7 +348,7 @@ def print_version(ctx, param, value):
     type=int,
     nargs=3,
     default=0,
-    help="How many 'select sleep()' queries to run? 1->query count, 2->thread count")
+    help="How many 'select sleep()' queries to run? 1->query count, 2->instance type, 3->thread count")
 @click.option(
     "--create_unique_queries",
     type=int,
@@ -401,7 +386,6 @@ def run_all(threads, instance_type,
         if create_tables:
             create_table(create_tables, instance_type)
         if create_sleep_queries:
-            #create_sleep_query(create_sleep_queries, instance_type)
             run_sleep_query(create_sleep_queries)
         if create_unique_queries:
             create_unique_query(create_unique_queries, instance_type)

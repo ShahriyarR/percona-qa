@@ -47,7 +47,6 @@ class TestPMMStress:
 
     def test_run_sleep_query(self):
         """Checking for return value from function"""
-        #return_value = randomized_instances.create_sleep_query(10, "ps")
         return_value = randomized_instances.run_sleep_query(20, "ps", 10)
         assert return_value == 0
 
