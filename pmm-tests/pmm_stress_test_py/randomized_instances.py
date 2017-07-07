@@ -174,12 +174,12 @@ def create_table(table_count, i_type):
     else:
         return 0
 
-def creating_sleep_query(i_type, query_count):
+def creating_sleep_query(sock, i_type, query_count):
 
     abspath = os.path.abspath(__file__)
     dname = os.path.dirname(abspath)
-    bash_command = '{}/create_sleep_queries.sh {} {}'
-    new_command = bash_command.format(dname[:-18], i_type, query_count)
+    bash_command = '{}/create_sleep_queries.sh {} {} {}'
+    new_command = bash_command.format(dname[:-18], i_type, query_count, sock)
     try:
          process = Popen(
                          split(new_command),
@@ -199,7 +199,7 @@ def creating_sleep_query(i_type, query_count):
     #     cursor.close()
     #     cnx.close()
 
-def repeat_creating_sleep_query(count, i, query_count, i_type):
+def repeat_creating_sleep_query(sock, count, i, query_count, i_type):
     for j in range(count):
         # For eg, with --pmm_instance_count 20 --threads 10
         # Here count = 2 from previous function
@@ -208,7 +208,7 @@ def repeat_creating_sleep_query(count, i, query_count, i_type):
         if j + i * count >= query_count:
             break
 
-        creating_sleep_query(i_type, query_count)
+        creating_sleep_query(sock, i_type, query_count)
 
 def run_sleep_query(query_count, i_type, threads=10):
     """
@@ -220,7 +220,7 @@ def run_sleep_query(query_count, i_type, threads=10):
         for sock in sockets:
 
             count = int(math.ceil(query_count/float(threads)))
-            workers = [threading.Thread(target=repeat_creating_sleep_query(count, i, query_count, i_type), name="thread_"+str(i))
+            workers = [threading.Thread(target=repeat_creating_sleep_query(sock, count, i, query_count, i_type), name="thread_"+str(i))
                                 for i in range(threads)]
             [worker.start() for worker in workers]
             [worker.join() for worker in workers]
