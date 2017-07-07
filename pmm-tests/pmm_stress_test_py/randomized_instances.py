@@ -224,8 +224,8 @@ def run_sleep_query(query_count, threads=10, i_type):
                                 for i in range(threads)]
             [worker.start() for worker in workers]
             [worker.join() for worker in workers]
-    except Exception as err:
-        print(err)
+    except Exception as e:
+        print(e)
     else:
         return 0
     # abspath = os.path.abspath(__file__)
