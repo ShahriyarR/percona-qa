@@ -210,7 +210,7 @@ def repeat_creating_sleep_query(count, i, query_count, i_type):
 
         creating_sleep_query(i_type, query_count)
 
-def run_sleep_query(query_count, threads=10, i_type):
+def run_sleep_query(query_count, i_type, threads=10):
     """
     Function to create given amount of sleep() queries.
     Using create_sleep_queries.sh script here
@@ -361,7 +361,7 @@ def print_version(ctx, param, value):
 @click.option(
     "--create_sleep_queries",
     type=int,
-    nargs=2,
+    nargs=3,
     default=0,
     help="How many 'select sleep()' queries to run? 1->query count, 2->thread count")
 @click.option(
@@ -402,7 +402,7 @@ def run_all(threads, instance_type,
             create_table(create_tables, instance_type)
         if create_sleep_queries:
             #create_sleep_query(create_sleep_queries, instance_type)
-            run_sleep_query(create_sleep_queries, instance_type)
+            run_sleep_query(create_sleep_queries)
         if create_unique_queries:
             create_unique_query(create_unique_queries, instance_type)
         if insert_blobs:
