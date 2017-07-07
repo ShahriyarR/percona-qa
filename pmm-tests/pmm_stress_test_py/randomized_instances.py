@@ -187,8 +187,6 @@ def create_sleep_query(query_count, i_type):
 
             for i in range(query_count):
                 cursor.execute("SELECT SLEEP(1000000000)")
-    except mysql.connector.Error as err:
-        print(err)
     except Exception as err:
         print(err)
     else:
