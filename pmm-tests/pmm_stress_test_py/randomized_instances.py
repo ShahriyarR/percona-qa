@@ -388,7 +388,7 @@ def run_all(threads, instance_type,
             create_table(create_tables, instance_type)
         if create_sleep_queries:
             #create_sleep_query(create_sleep_queries, instance_type)
-            run_sleep_query()
+            run_sleep_query(create_sleep_queries)
         if create_unique_queries:
             create_unique_query(create_unique_queries, instance_type)
         if insert_blobs:
