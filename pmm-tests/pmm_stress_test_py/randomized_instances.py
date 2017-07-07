@@ -346,7 +346,6 @@ def print_version(ctx, param, value):
 @click.option(
     "--create_sleep_queries",
     nargs=3,
-    default=0,
     help="How many 'select sleep()' queries to run? 1->query count, 2->instance type, 3->thread count")
 @click.option(
     "--create_unique_queries",
