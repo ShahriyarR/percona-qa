@@ -345,7 +345,7 @@ def print_version(ctx, param, value):
     help="How many tables to create per added instance for stress test?")
 @click.option(
     "--create_sleep_queries",
-    type=int,
+    type=int,unicode
     nargs=3,
     default=0,
     help="How many 'select sleep()' queries to run? 1->query count, 2->instance type, 3->thread count")

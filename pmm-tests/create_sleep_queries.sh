@@ -19,5 +19,5 @@ elif [[ "${CLIENT_NAME}" == "pxc" ]]; then
   BASEDIR="$WORKDIR/$BASEDIR"
 fi
 
-${BASEDIR}/bin/mysql --user=${MYSQL_USER} --socket=${MYSQL_SOCK} -e "select sleep(10000000)"
 echo "Creating sleep() queries using MYSQL_SOCK=${MYSQL_SOCK}"
+${BASEDIR}/bin/mysql --user=${MYSQL_USER} --socket=${MYSQL_SOCK} -e "select sleep(10000000)"
