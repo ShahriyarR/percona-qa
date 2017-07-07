@@ -174,18 +174,32 @@ def create_table(table_count, i_type):
     else:
         return 0
 
-def creating_sleep_query(sock):
-    try:
-        cnx = mysql.connector.connect(user='root', unix_socket=sock, host='localhost')
-        cursor = cnx.cursor()
-        cursor.execute("SELECT SLEEP(1000000000)")
-    except Exception as ex:
-        print(ex)
-    finally:
-        cursor.close()
-        cnx.close()
+def creating_sleep_query(i_type, query_count):
 
-def repeat_creating_sleep_query(sock, count, i, query_count):
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    bash_command = '{}/create_sleep_queries.sh {} {}'
+    new_command = bash_command.format(dname[:-18], i_type, query_count)
+    try:
+         process = Popen(
+                         split(new_command),
+                         stdin=None,
+                         stdout=None,
+                         stderr=None)
+     except Exception as e:
+         print(e)
+
+    # try:
+    #     cnx = mysql.connector.connect(user='root', unix_socket=sock, host='localhost')
+    #     cursor = cnx.cursor()
+    #     cursor.execute("SELECT SLEEP(1000000000)")
+    # except Exception as ex:
+    #     print(ex)
+    # finally:
+    #     cursor.close()
+    #     cnx.close()
+
+def repeat_creating_sleep_query(count, i, query_count, i_type):
     for j in range(count):
         # For eg, with --pmm_instance_count 20 --threads 10
         # Here count = 2 from previous function
@@ -194,9 +208,9 @@ def repeat_creating_sleep_query(sock, count, i, query_count):
         if j + i * count >= query_count:
             break
 
-        creating_sleep_query(sock)
+        creating_sleep_query(i_type, query_count)
 
-def run_sleep_query(query_count, threads=10):
+def run_sleep_query(query_count, threads=10, i_type):
     """
     Function to create given amount of sleep() queries.
     Using create_sleep_queries.sh script here
@@ -206,7 +220,7 @@ def run_sleep_query(query_count, threads=10):
         for sock in sockets:
 
             count = int(math.ceil(query_count/float(threads)))
-            workers = [threading.Thread(target=repeat_creating_sleep_query(sock, count, i, query_count), name="thread_"+str(i))
+            workers = [threading.Thread(target=repeat_creating_sleep_query(count, i, query_count, i_type), name="thread_"+str(i))
                                 for i in range(threads)]
             [worker.start() for worker in workers]
             [worker.join() for worker in workers]
@@ -347,7 +361,7 @@ def print_version(ctx, param, value):
 @click.option(
     "--create_sleep_queries",
     type=int,
-    nargs=2,
+    nargs=3,
     default=0,
     help="How many 'select sleep()' queries to run? 1->query count, 2->thread count")
 @click.option(
@@ -388,7 +402,7 @@ def run_all(threads, instance_type,
             create_table(create_tables, instance_type)
         if create_sleep_queries:
             #create_sleep_query(create_sleep_queries, instance_type)
-            run_sleep_query(create_sleep_queries)
+            run_sleep_query(create_sleep_queries, instance_type)
         if create_unique_queries:
             create_unique_query(create_unique_queries, instance_type)
         if insert_blobs:
