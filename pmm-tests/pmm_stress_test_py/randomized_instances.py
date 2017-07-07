@@ -189,11 +189,11 @@ def create_sleep_query(query_count, i_type):
                 cursor.execute("SELECT SLEEP(1000000000)")
     except mysql.connector.Error as err:
         print(err)
+    else:
+        return 0
     finally:
         cursor.close()
         cnx.close()
-    else:
-        return 0
 
     # abspath = os.path.abspath(__file__)
     # dname = os.path.dirname(abspath)
