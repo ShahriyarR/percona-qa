@@ -182,7 +182,7 @@ def create_sleep_query(query_count, i_type):
     sockets = getting_instance_socket()
     try:
         for sock in sockets:
-            cnx = mysql.connector.connect(user='root', socket=sock, host='localhost')
+            cnx = mysql.connector.connect(user='root', unix_socket=sock, host='localhost')
             cursor = cnx.cursor()
 
             for i in range(query_count):
