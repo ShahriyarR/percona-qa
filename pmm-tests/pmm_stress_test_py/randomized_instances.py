@@ -2,7 +2,7 @@ from subprocess import check_output, Popen, PIPE
 from shlex import split
 from uuid import uuid4
 from random import randint
-import threading, click, os, math
+import threading, click, os, math, mysql.connector
 
 ###############################################################################
 # Main logic goes here, below
@@ -179,20 +179,36 @@ def create_sleep_query(query_count, i_type):
     Function to create given amount of sleep() queries.
     Using create_sleep_queries.sh script here
     """
-    abspath = os.path.abspath(__file__)
-    dname = os.path.dirname(abspath)
-    bash_command = '{}/create_sleep_queries.sh {} {}'
-    new_command = bash_command.format(dname[:-18], i_type, query_count)
+    sockets = getting_instance_socket()
     try:
-        process = Popen(
-                        split(new_command),
-                        stdin=None,
-                        stdout=None,
-                        stderr=None)
-    except Exception as e:
-        print(e)
+        for sock in sockets:
+            cnx = mysql.connector.connect(user='root',socket=sock, host='localhost')
+            cursor = cnx.cursor()
+
+            for i in range(query_count):
+                cursor.execute("SELECT SLEEP(1000000000)")
+    except mysql.connector.Error as err:
+        print(err)
+    finally:
+        cursor.close()
+        cnx.close()
     else:
         return 0
+
+    # abspath = os.path.abspath(__file__)
+    # dname = os.path.dirname(abspath)
+    # bash_command = '{}/create_sleep_queries.sh {} {}'
+    # new_command = bash_command.format(dname[:-18], i_type, query_count)
+    # try:
+    #     process = Popen(
+    #                     split(new_command),
+    #                     stdin=None,
+    #                     stdout=None,
+    #                     stderr=None)
+    # except Exception as e:
+    #     print(e)
+    # else:
+    #     return 0
     #output, error = process.communicate()
 
 def create_unique_query(query_count, i_type):
