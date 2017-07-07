@@ -186,7 +186,7 @@ def creating_sleep_query(i_type, query_count):
                          stdin=None,
                          stdout=None,
                          stderr=None)
-     except Exception as e:
+    except Exception as e:
          print(e)
 
     # try:
@@ -361,7 +361,7 @@ def print_version(ctx, param, value):
 @click.option(
     "--create_sleep_queries",
     type=int,
-    nargs=3,
+    nargs=2,
     default=0,
     help="How many 'select sleep()' queries to run? 1->query count, 2->thread count")
 @click.option(
