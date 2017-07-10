@@ -22,7 +22,7 @@ fi
 # Function for randomg string
 function random-string() {
      #/usr/bin/cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-32} | head -n 1
-     head /dev/urandom | tr -dc 'A-Za-z0-9' | head -c $3 ; echo ''
+     head /dev/urandom | tr -dc 'A-Za-z0-9' | head -c ${STRING_LENGTH} ; echo ''
 }
 
 str=$(random-string)
