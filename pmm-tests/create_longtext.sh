@@ -22,10 +22,12 @@ fi
 # Function for randomg string
 function random-string() {
      #/usr/bin/cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-32} | head -n 1
-     head /dev/urandom | tr -dc A-Za-z0-9 | head -c $1 ; echo ''
+     head /dev/urandom | tr -dc 'A-Za-z0-9' | head -c $1 ; echo ''
 }
 
 str=$(random-string ${STRING_LENGTH})
+echo ${random-string}
+echo ${str}
 
 for i in $(sudo pmm-admin list | grep 'mysql:metrics[ \t]*PS_NODE' | awk -F[\(\)] '{print $2}') ; do
 	MYSQL_SOCK=${i}
