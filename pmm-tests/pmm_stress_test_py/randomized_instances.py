@@ -391,9 +391,6 @@ def run_all(threads, instance_type,
         if insert_blobs:
             insert_blob(insert_blobs, instance_type)
         if insert_longtexts:
-            print(insert_longtexts)
-            print(insert_longtexts[0])
-            print(insert_longtexts[1])
             insert_longtext(instance_type, insert_longtexts[0], insert_longtexts[1])
 
 
