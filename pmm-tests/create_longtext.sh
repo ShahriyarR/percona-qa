@@ -21,7 +21,7 @@ fi
 
 # Function for randomg string
 function random-string() {
-     head -n 1 < /usr/bin/cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-32} | head -n 1
+     /usr/bin/cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-32} | head -n 1
 }
 
 str=$(random-string ${STRING_LENGTH})
