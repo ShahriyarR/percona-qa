@@ -386,7 +386,6 @@ def run_all(threads, instance_type,
         print("ERROR: you must give an option, run with --help for available options")
     else:
         if instance_count > 0:
-            print(wipe_clients)
             runner(pmm_instance_count, instance_type, instance_count, wipe_clients, threads)
         if create_databases:
             create_db(create_databases, instance_type)
