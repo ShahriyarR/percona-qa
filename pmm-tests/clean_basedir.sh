@@ -1,7 +1,7 @@
 #!/bin/bash
 CLIENT_NAME=$1
 WORKDIR="${PWD}"
-
+MYSQL_USER=root
 
 if [[ "${CLIENT_NAME}" == "ps" ]]; then
   BASEDIR=$(ls -1td ?ercona-?erver-5.* | grep -v ".tar" | head -n1)
