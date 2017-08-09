@@ -75,5 +75,5 @@ class TestPMMStress:
     def test_clean_env(self):
         """Checking return value from function"""
         print("\nIn test_clean_env...")
-        return_value = randomized_instances.clean_env("ps")
+        return_value = randomized_instances.clean_env("ps", sock)
         assert return_value == 0
