@@ -411,6 +411,11 @@ def run_all(threads, instance_type,
     if (not threads) and (not instance_type) and (not instance_count) and (not pmm_instance_count) and (not create_databases):
         print("ERROR: you must give an option, run with --help for available options")
     else:
+        if wipe_setup:
+            # I think it is necessary to shutdown physical instances and remove pmm instances prior this.
+            # So calling pmm_framework_wipe_client() here
+            pmm_framework_wipe_client()
+            clean_env(instance_type)
         if instance_count > 0:
             runner(pmm_instance_count, instance_type, instance_count, wipe_clients, threads)
         if create_databases:
@@ -425,11 +430,7 @@ def run_all(threads, instance_type,
             insert_blob(insert_blobs, instance_type)
         if insert_longtexts:
             insert_longtext(instance_type, insert_longtexts[0], insert_longtexts[1])
-        if wipe_setup:
-            # I think it is necessary to shutdown physical instances and remove pmm instances prior this.
-            # So calling pmm_framework_wipe_client() here
-            pmm_framework_wipe_client()
-            clean_env(instance_type)
+
 
 
 if __name__ == "__main__":
