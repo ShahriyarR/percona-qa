@@ -1,4 +1,5 @@
 #!/bin/bash
+# This script is using by PMM Stress Test Python code
 CLIENT_NAME=$1
 MYSQL_SOCK=$2
 WORKDIR="${PWD}"
@@ -17,5 +18,4 @@ elif [[ "${CLIENT_NAME}" == "pxc" ]]; then
   BASEDIR="$WORKDIR/$BASEDIR"
 fi
 
-#echo "Selecting databases"
 ${BASEDIR}/bin/mysql --user=${MYSQL_USER} --socket=${MYSQL_SOCK} -e "select schema_name from information_schema.schemata where schema_name not in ('mysql', 'information_schema', 'performance_schema', 'sys')"

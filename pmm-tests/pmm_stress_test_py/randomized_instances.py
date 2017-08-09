@@ -293,20 +293,26 @@ def insert_longtext(i_type, insert_count, string_length):
 
 def clean_env(i_type):
     """
-    Function for removing test instance folder(PS/PXC folder).
-    It will wipe out the created databases and tables and next time test will begin from scratch,
-    I.E the basedir will be removed.
+    Function for removing test databases.
     """
     sockets = getting_instance_socket()
 
     abspath = os.path.abspath(__file__)
     dname = os.path.dirname(abspath)
     for sock in sockets:
-        bash_command = '{}/clean_basedir.sh {} {}'
-        new_command = bash_command.format(dname[:-18], i_type, sock)
+        get_databases = '{}/get_databases.sh {} {}'
+        get_db_list = get_databases.format(dname[:-18], i_type, sock)
         try:
-            prc = check_output(new_command, shell=True)
-            print prc.split()
+            prc = check_output(get_db_list, shell=True)
+            result_databases = prc.split()[1:]
+            drop_databases = '{}/drop_databases.sh {} {} {}'
+            for database in result_databases:
+                drop_db = drop_databases.format(dname[:-18], i_type, sock, database)
+                process = Popen(
+                                split(drop_db),
+                                stdin=None,
+                                stdout=None,
+                                stderr=None)
         except Exception as e:
             print(e)
 
