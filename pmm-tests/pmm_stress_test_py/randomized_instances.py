@@ -294,6 +294,7 @@ def insert_longtext(i_type, insert_count, string_length):
 def clean_env(i_type):
     """
     Function for removing test databases.
+    get_databases.sh and drop_databases.sh are used here.
     """
     sockets = getting_instance_socket()
 
@@ -418,9 +419,7 @@ def run_all(threads, instance_type,
         print("ERROR: you must give an option, run with --help for available options")
     else:
         if wipe_setup:
-            # I think it is necessary to shutdown physical instances and remove pmm instances prior this.
-            # So calling pmm_framework_wipe_client() here
-            pmm_framework_wipe_client()
+            # Drop old test databases here
             clean_env(instance_type)
         if instance_count > 0:
             runner(pmm_instance_count, instance_type, instance_count, wipe_clients, threads)

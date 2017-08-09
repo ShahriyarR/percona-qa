@@ -1,5 +1,6 @@
 #!/bin/bash
 # This script is using by PMM Stress Test Python code
+# Options are passed from there
 CLIENT_NAME=$1
 MYSQL_SOCK=$2
 WORKDIR="${PWD}"
