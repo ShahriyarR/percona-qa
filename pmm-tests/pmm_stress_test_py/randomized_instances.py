@@ -406,7 +406,7 @@ def print_version(ctx, param, value):
 @click.option(
     "--wipe_setup",
     is_flag=True,
-    help="Remove PS/PXC instance folder.[Cleaning up, after running tests]"
+    help="Remove test database and tables from physical instances"
 )
 
 def run_all(threads, instance_type,
