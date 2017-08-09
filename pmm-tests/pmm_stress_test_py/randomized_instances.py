@@ -314,8 +314,7 @@ def clean_env(i_type):
                                 stdin=None,
                                 stdout=None,
                                 stderr=None)
-                output, error = process.communicate()
-                p_status = process.wait()                
+                output, error = process.communicate()                
         except Exception as e:
             print(e)
 
