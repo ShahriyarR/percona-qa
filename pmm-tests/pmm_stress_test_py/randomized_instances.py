@@ -297,20 +297,20 @@ def clean_env(i_type):
     It will wipe out the created databases and tables and next time test will begin from scratch,
     I.E the basedir will be removed.
     """
+    sockets = getting_instance_socket()
+
     abspath = os.path.abspath(__file__)
     dname = os.path.dirname(abspath)
-    bash_command = '{}/clean_basedir.sh {}'
-    new_command = bash_command.format(dname[:-18], i_type)
-    try:
-        process = Popen(
-                        split(new_command),
-                        stdin=None,
-                        stdout=None,
-                        stderr=None)
-    except Exception as e:
-        print(e)
-    else:
-        return 0
+    for sock in sockets:
+        bash_command = '{}/clean_basedir.sh {} {}'
+        new_command = bash_command.format(dname[:-18], i_type, sock)
+        try:
+            prc = check_output(new_command, shell=True)
+            print prc.split()
+        except Exception as e:
+            print(e)
+
+    return 0
 
 ##############################################################################
 # Command line things are here, this is separate from main logic of script.
