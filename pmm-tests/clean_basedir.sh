@@ -19,5 +19,5 @@ fi
 for i in $(sudo pmm-admin list | grep 'mysql:metrics[ \t]*PS_NODE' | awk -F[\(\)] '{print $2}') ; do
 	MYSQL_SOCK=${i}
   echo "Selecting databases"
-	${BASEDIR}/bin/mysql --user=${MYSQL_USER} --socket=${MYSQL_SOCK} -e "select schema_name from schemata where schema_name not in ('mysql', 'information_schema', 'performance_schema', 'sys')"
+	${BASEDIR}/bin/mysql --user=${MYSQL_USER} --socket=${MYSQL_SOCK} -e "select schema_name from information_schema.schemata where schema_name not in ('mysql', 'information_schema', 'performance_schema', 'sys')"
 done
