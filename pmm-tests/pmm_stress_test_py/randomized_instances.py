@@ -291,6 +291,27 @@ def insert_longtext(i_type, insert_count, string_length):
     else:
         return 0
 
+def clean_env(i_type):
+    """
+    Function for removing test instance folder(PS/PXC folder).
+    It will wipe out the created databases and tables and next time test will begin from scratch,
+    I.E the basedir will be removed.
+    """
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    bash_command = '{}/clean_basedir.sh {}'
+    new_command = bash_command.format(dname[:-18], i_type)
+    try:
+        process = Popen(
+                        split(new_command),
+                        stdin=None,
+                        stdout=None,
+                        stderr=None)
+    except Exception as e:
+        print(e)
+    else:
+        return 0
+
 ##############################################################################
 # Command line things are here, this is separate from main logic of script.
 def print_version(ctx, param, value):
@@ -375,13 +396,18 @@ def print_version(ctx, param, value):
     is_flag=True,
     help="Remove/wipe pmm instances if specified"
 )
+@click.option(
+    "--wipe_setup",
+    is_flag=True,
+    help="Remove PS/PXC instance folder.[Cleaning up, after running tests]"
+)
 
 def run_all(threads, instance_type,
             instance_count, pmm_instance_count,
             create_databases, create_tables,
             create_sleep_queries, create_unique_queries,
             insert_blobs, insert_longtexts,
-            wipe_clients):
+            wipe_clients, wipe_setup):
     if (not threads) and (not instance_type) and (not instance_count) and (not pmm_instance_count) and (not create_databases):
         print("ERROR: you must give an option, run with --help for available options")
     else:
@@ -399,6 +425,11 @@ def run_all(threads, instance_type,
             insert_blob(insert_blobs, instance_type)
         if insert_longtexts:
             insert_longtext(instance_type, insert_longtexts[0], insert_longtexts[1])
+        if wipe_setup:
+            # I think it is necessary to shutdown physical instances and remove pmm instances prior this.
+            # So calling pmm_framework_wipe_client() here
+            pmm_framework_wipe_client()
+            clean_env(instance_type)
 
 
 if __name__ == "__main__":
