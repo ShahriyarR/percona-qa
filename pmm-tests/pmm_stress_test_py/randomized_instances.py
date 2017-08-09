@@ -419,7 +419,7 @@ def run_all(threads, instance_type,
         print("ERROR: you must give an option, run with --help for available options")
     else:
         if wipe_setup:
-            # Drop old test databases here
+            # Drop old test databases/tables here
             clean_env(instance_type)
         if instance_count > 0:
             runner(pmm_instance_count, instance_type, instance_count, wipe_clients, threads)
