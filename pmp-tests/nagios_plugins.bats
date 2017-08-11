@@ -3,9 +3,9 @@
 
 
 @test "run pmp-check-mysql-deadlocks test" {
-su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-mysql-deadlocks -H 127.0.0.1 -i 1 -w 0 -c 60"
+command_status = $(su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-mysql-deadlocks -H 127.0.0.1 -i 1 -w 0 -c 60")
 echo "$output"
-    [ "$status" -eq 0 ]
+    [ "$command_status" -eq 0 ]
     echo "${output}" | grep "OK"
 }
 
