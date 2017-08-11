@@ -9,15 +9,13 @@ echo "$output"
 }
 
 @test "run pmp-check-unix-memory test" {
-  su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-unix-memory"
+  command_status=$(su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-unix-memory")
   echo "$output"
-  [ "$status" -eq 0 ]
-  echo "${output}" | grep "OK"
+  echo "${command_status}" | grep "OK"
 }
 
 @test "run pmp-check-pt-table-checksum test" {
-  su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-pt-table-checksum"
+  command_status=$(su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-pt-table-checksum")
   echo "$output"
-  [ "$status" -eq 0 ]
-  echo "${output}" | grep "OK"
+  echo "${command_status}" | grep "OK"
 }
