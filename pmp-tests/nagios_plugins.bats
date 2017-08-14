@@ -25,3 +25,15 @@ echo "$output"
   echo "$output"
   echo "${command_status}" | grep "OK"
 }
+
+@test "run pmp-check-mysql-status without options" {
+  command_status=$(su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-mysql-status")
+  echo $output
+  echo "${command_status}" | grep "Error"
+}
+
+@test "run pmp-check-mysql-status with some options" {
+  command_status=$(su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-mysql-status -x Created_tmp_disk_tables -o / -y Uptime -I 5 -w 10")
+  echo $output
+  echo "${command_status}" | grep "OK"
+}
