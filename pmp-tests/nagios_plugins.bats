@@ -19,3 +19,9 @@ echo "$output"
   echo "$output"
   echo "${command_status}" | grep "OK"
 }
+
+@test "run pmp-check-pt-table-checksum test" {
+  command_status=$(su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-mysql-ts-count")
+  echo "$output"
+  echo "${command_status}" | grep "OK"
+}
