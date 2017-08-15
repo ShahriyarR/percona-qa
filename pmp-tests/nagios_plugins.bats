@@ -64,3 +64,16 @@ echo "$output"
   echo $output
   echo "${commant_status}" |  grep "OK"
 }
+
+@test "run pmp-check-mysql-processlist without any option" {
+  commant_status=$(su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-mysql-processlist")
+  echo $output
+  echo "${commant_status}" |  grep "OK"
+}
+
+@test "run pmp-check-mysql-processlist with -C wrong value" {
+  # Should give an Error
+  run su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-mysql-processlist -w 1 -C sddfsdf"
+  echo $output
+  [ "$status" -eq 3 ]
+}
