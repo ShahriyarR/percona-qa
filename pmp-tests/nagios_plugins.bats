@@ -50,3 +50,16 @@ echo "$output"
   run su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-mysql-replication-running --master-conn fff"
   [ "$status" -eq 3 ]
 }
+
+@test "run pmp-check-mysql-replication-delay with --unconfigured" {
+  # Should give UNK
+  command_status=$(su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-mysql-replication-delay --unconfigured")
+  echo $output
+  echo "${commant_status}" |  grep "UNK"
+}
+
+@test "run pmp-check-mysql-replication-delay without any option" {
+  commant_status=$(su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-mysql-replication-delay")
+  echo $output
+  echo "${commant_status}" |  grep "OK"
+}
