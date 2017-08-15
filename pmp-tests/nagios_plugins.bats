@@ -54,7 +54,7 @@ echo "$output"
 
 @test "run pmp-check-mysql-replication-delay with --unconfigured" {
   # Should give UNK
-  command_status=$(su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-mysql-replication-delay --unconfigured")
+  run su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-mysql-replication-delay --unconfigured"
   echo $output
   [ "$status" -eq 3 ]
 }
