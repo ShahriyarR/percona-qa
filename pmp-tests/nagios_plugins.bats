@@ -27,6 +27,7 @@ echo "$output"
 }
 
 @test "run pmp-check-mysql-status without options" {
+  # Should give error with status 3
   run su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-mysql-status"
   echo $output
   [ "$status" -eq 3 ]
@@ -36,4 +37,16 @@ echo "$output"
   command_status=$(su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-mysql-status -x Created_tmp_disk_tables -o / -y Uptime -I 5 -w 10")
   echo $output
   echo "${command_status}" | grep "OK"
+}
+
+@test "run pmp-check-mysql-replication-running without options" {
+  commant_status=$(su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-mysql-replication-running --master-conn")
+  echo $output
+  echo "${commant_status}" |  grep "OK"
+}
+
+@test "run pmp-check-mysql-replication-running with --master-conn" {
+  # Should give a syntax error here
+  run su -l nagios -c "env -i HOME=/usr/local/nagios /usr/local/nagios/libexec/pmp-check-mysql-replication-running --master-conn fff"
+  [ "$status" -eq 3 ]
 }
