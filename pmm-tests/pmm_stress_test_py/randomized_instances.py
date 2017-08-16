@@ -246,6 +246,7 @@ def create_unique_query(query_count, i_type):
                         stdin=None,
                         stdout=None,
                         stderr=None)
+        output, error = process.communicate()
     except Exception as e:
         print(e)
     else:
@@ -266,6 +267,7 @@ def insert_blob(insert_count, i_type):
                         stdin=None,
                         stdout=None,
                         stderr=None)
+        output, error = process.communicate()
     except Exception as e:
         print(e)
     else:
@@ -286,6 +288,7 @@ def insert_longtext(i_type, insert_count, string_length):
                         stdin=None,
                         stdout=None,
                         stderr=None)
+        output, error = process.communicate()
     except Exception as e:
         print(e)
     else:
@@ -433,7 +436,7 @@ def run_all(threads, instance_type,
             runner(pmm_instance_count, instance_type, instance_count, wipe_clients, threads)
         if cycle > 0:
             for i in range(cycle):
-                print("Cycle {}".format(i))
+                print("Starting cycle {}".format(i))
                 if create_databases:
                     create_db(create_databases, instance_type)
                 if create_tables:
@@ -446,7 +449,7 @@ def run_all(threads, instance_type,
                     insert_blob(insert_blobs, instance_type)
                 if insert_longtexts:
                     insert_longtext(instance_type, insert_longtexts[0], insert_longtexts[1])
-                print("Cleaning Cycle {}".format(i))
+                print("Cleaning cycle {}".format(i))
                 clean_env(instance_type)
 
 
