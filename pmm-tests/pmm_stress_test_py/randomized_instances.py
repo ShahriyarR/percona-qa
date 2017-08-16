@@ -435,7 +435,7 @@ def run_all(threads, instance_type,
         if instance_count > 0:
             runner(pmm_instance_count, instance_type, instance_count, wipe_clients, threads)
         if cycle > 0:
-            for i in range(cycle):
+            for i in range(1,cycle+1):
                 print("Starting cycle {}".format(i))
                 if create_databases:
                     create_db(create_databases, instance_type)
