@@ -29,6 +29,8 @@ tap -> adding --tap option
 stress -> enabling stress test
 table_c -> the table count for stress test
 table_size -> the table size to prepare using sysbench
+is_gui -> enable if you are going to run gui test
+url -> pass the url for gui test
 ```
 
 Running stress test, with 100 tables, with --tap option, for 3 ps instances:
